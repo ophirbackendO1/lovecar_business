@@ -1,12 +1,7 @@
 <template>
     <div :style="{backgroundColor: $themeColor}" class="button-container col-lg-2 col-md-6 col-sm-11 col-11" style="position:fixed;bottom:10px;left:50%;transform: translate(-50%)">
         <button class="button">
-            <svg class="icon" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024"
-                height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
-                <path
-                    d="M946.5 505L560.1 118.8l-25.9-25.9a31.5 31.5 0 0 0-44.4 0L77.5 505a63.9 63.9 0 0 0-18.8 46c.4 35.2 29.7 63.3 64.9 63.3h42.5V940h691.8V614.3h43.4c17.1 0 33.2-6.7 45.3-18.8a63.6 63.6 0 0 0 18.7-45.3c0-17-6.7-33.1-18.8-45.2zM568 868H456V664h112v204zm217.9-325.7V868H632V640c0-22.1-17.9-40-40-40H432c-22.1 0-40 17.9-40 40v228H238.1V542.3h-96l370-369.7 23.1 23.1L882 542.3h-96.1z">
-                </path>
-            </svg>
+            <svg fill="#000000" viewBox="0 0 24 24" id="timer-7-second" data-name="Flat Line" xmlns="http://www.w3.org/2000/svg" class="icon flat-line"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><circle id="secondary" cx="12" cy="13.5" r="7.5" style="fill: #2ca9bc; stroke-width: 2;"></circle><polyline id="primary" points="10.6 15.57 12 14 12 10" style="fill: none; stroke: #000000; stroke-linecap: round; stroke-linejoin: round; stroke-width: 2;"></polyline><path id="primary-2" data-name="primary" d="M6.7,8.2,5.2,6.7M17.3,8.2l1.5-1.5M12,3V6m3-3H9m3,3a7.5,7.5,0,1,0,7.5,7.5A7.5,7.5,0,0,0,12,6Z" style="fill: none; stroke: #000000; stroke-linecap: round; stroke-linejoin: round; stroke-width: 2;"></path></g></svg>
         </button>
         <button class="button">
             <svg class="icon" stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"

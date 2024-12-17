@@ -12,4 +12,8 @@ class BusinessController extends Controller
             'shop_id' => $request->shop_id
         ]);
     }
+
+    public function create(){
+        return Inertia::render('Business/Create');
+}
 }

@@ -4,6 +4,8 @@ import '../css/app.css';
 import { createApp, h } from 'vue'
 import { createInertiaApp } from '@inertiajs/vue3'
 import axios from 'axios';
+import { Link } from '@inertiajs/vue3';
+
 
 // Vuetify
 import 'vuetify/styles'
@@ -20,9 +22,9 @@ const vuetify = createVuetify({
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
-import {faMagnifyingGlass,faPhone,faLock,faWrench,faCircleCheck,faClock} from "@fortawesome/free-solid-svg-icons";
+import {faMagnifyingGlass,faPhone,faLock,faWrench,faCircleCheck,faClock,faBullhorn,faMinusCircle} from "@fortawesome/free-solid-svg-icons";
 import { faEye,faComment} from '@fortawesome/free-regular-svg-icons';
-library.add(faMagnifyingGlass,faPhone,faLock,faWrench,faCircleCheck,faClock,faComment,faEye);
+library.add(faMagnifyingGlass,faPhone,faLock,faWrench,faCircleCheck,faClock,faComment,faEye,faBullhorn,faMinusCircle);
 
 const getThemeColor = async () => {
     const response = await axios.get('/api/settings?key=theme_color');
@@ -47,6 +49,7 @@ createInertiaApp({
   setup({ el, App, props, plugin }) {
     const app = createApp({ render: () => h(App, props) });
       app.use(plugin);
+      app.component('Link', Link)
       app.config.globalProperties.$themeColor = "#980E0E";
       app.provide('baseUrl','https://lovecar.autos/api');
       app.component("font-awesome-icon", FontAwesomeIcon);

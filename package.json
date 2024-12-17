@@ -25,6 +25,8 @@
         "@vitejs/plugin-vue": "^5.2.1",
         "bootstrap": "^5.3.3",
         "lottie-web": "^5.12.2",
-        "vuetify": "^3.7.5"
+        "vue3-google-map": "^0.21.0",
+        "vuetify": "^3.7.5",
+        "ziggy-js": "^2.4.1"
     }
 }
