@@ -95,7 +95,7 @@ const login = () => {
 
         if (response.data.user) {
             localStorage.setItem('token', response.data.token);
-            localStorage.setItem('user', response.data.user);
+            localStorage.setItem('user', JSON.stringify(response.data.user));
             router.post('/setToken',{token: response.data.token});
             router.get('/dashboard');
         }

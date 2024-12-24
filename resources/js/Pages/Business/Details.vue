@@ -4,9 +4,9 @@
             v-if="loading">
             <Carloader style="margin-bottom: 100px;" />
         </div>
-        <div class="container mt-8" v-else style="height:120vh;padding:0px 180px">
-            <div class="flex justify-end my-2">
-                <BackButton />
+        <div class="container mt-15" v-else style="height:120vh;padding:0px 180px">
+            <div class="flex justify-start mb-5">
+                <BackButton class="mt-3" />
             </div>
             <div class="row" style="height:180px">
                 <div class="col-6 h-100">
@@ -34,8 +34,7 @@
                                 </div>
                             </div>
                             <div class="flex flex-wrap">
-                                <!-- <img src="https://cdn-icons-png.flaticon.com/128/1688/1688988.png" class="me-2"
-                                    style="width:26px;height:26px"> -->
+
                                 <span class="text-success fw-bold" :style="{ color: $themeColor }">
                                     Last updated on {{ business?.last_updated }}
                                 </span>
@@ -68,7 +67,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-4">
+                        <div class="col-4" style="cursor:pointer;">
                             <div class="rounded-lg border shadow p-3 flex flex-col justify-between"
                                 style="height:130px;">
                                 <div>
@@ -97,7 +96,7 @@
                     </div>
                     <div class="col-12 my-5">
                         <div class="chips d-flex">
-                            <span v-for="(day, index) in days" :key="day" style="cursor:pointer;border-radius:15px"
+                            <span v-for="(day, index) in days" :key="day" style="border-radius:15px"
                                 :style="{ borderColor: $themeColor, backgroundColor: selectedDays.includes(index.toString()) ? $themeColor : '' }"
                                 :class="['w-12 h-10 border-2 p-2 me-3 flex justify-center items-center', selectedDays.includes(index.toString()) ? ['text-white font-bold'] : '']">{{
                                     day }}</span>
@@ -149,7 +148,7 @@
                 <div class="col-6 mb-4 mt-3">
                     <!-- google maps here -->
                     <GoogleMap api-key="AIzaSyBqvZfzDW7YlZHtfaR-5l1v8f0YkMzswQM" style="width:100%;height:150px;"
-                        :zoom="7" :center="center">
+                        :zoom="15" :center="center">
                         <Marker :options="{ position: center }"></Marker>
                     </GoogleMap>
 
@@ -177,8 +176,9 @@
                     </div>
                     <!-- Notes  -->
                     <div class="mt-4 p-2">
+                         <h1 class="font-semibold fs-5">Notes</h1>
                         <div v-for="note in business?.shop_notes">
-                            <h1 class="font-semibold fs-5">Notes</h1>
+
                             <p class="my-3"><font-awesome-icon icon="fa-solid fa-bullhorn"
                                     class="text-warning me-2 fs-5" />
                                 {{ note.text }}</p>

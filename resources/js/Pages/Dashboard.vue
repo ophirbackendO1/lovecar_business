@@ -5,15 +5,9 @@
         </div>
 
         <div class="flex justify-end">
-            <Link :href="route('business.create')"><button class="button" :style="{backgroundColor: $themeColor }">
-                <span>
-                    <svg height="24" width="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M0 0h24v24H0z" fill="none"></path>
-                        <path d="M11 11V5h2v6h6v2h-6v6h-2v-6H5v-2z" fill="currentColor"></path>
-                    </svg>
-                    Create
-                </span>
-            </button></Link>
+            <Link :href="route('business.create')">
+                <CreateButton />
+            </Link>
 
         </div>
         <div class="container flex justify-center items-center" style="position:absolute;top:20px;height:120vh"
@@ -31,6 +25,7 @@
 <script setup>
 import Card from './Components/Card.vue';
 import Carloader from './Components/Carloader.vue';
+import CreateButton from './Components/CreateButton.vue';
 import { onMounted, inject, ref } from 'vue';
 import { router } from '@inertiajs/vue3';
 import Layout from './Layouts/Layout.vue';

@@ -5,7 +5,7 @@ import { createApp, h } from 'vue'
 import { createInertiaApp } from '@inertiajs/vue3'
 import axios from 'axios';
 import { Link } from '@inertiajs/vue3';
-
+import { route } from 'ziggy-js';
 
 // Vuetify
 import 'vuetify/styles'
@@ -22,9 +22,9 @@ const vuetify = createVuetify({
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
-import {faMagnifyingGlass,faPhone,faLock,faWrench,faCircleCheck,faClock,faBullhorn,faMinusCircle} from "@fortawesome/free-solid-svg-icons";
+import {faMagnifyingGlass,faPhone,faLock,faWrench,faCircleCheck,faClock,faBullhorn,faMinusCircle,faCaretDown,faFilePen} from "@fortawesome/free-solid-svg-icons";
 import { faEye,faComment} from '@fortawesome/free-regular-svg-icons';
-library.add(faMagnifyingGlass,faPhone,faLock,faWrench,faCircleCheck,faClock,faComment,faEye,faBullhorn,faMinusCircle);
+library.add(faMagnifyingGlass,faPhone,faLock,faWrench,faCircleCheck,faClock,faComment,faEye,faBullhorn,faMinusCircle,faCaretDown,faFilePen);
 
 const getThemeColor = async () => {
     const response = await axios.get('/api/settings?key=theme_color');
