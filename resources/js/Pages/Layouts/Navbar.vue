@@ -1,5 +1,5 @@
 <template>
-    <div :style="{ backgroundColor: $themeColor }" class="button-container col-8"
+    <div v-if="shopId" :style="{ backgroundColor: $themeColor }" class="button-container caret-violet-800"
         style="position:fixed;top:100px;left:50%;transform: translate(-50%);">
 
         <Link :href="route('dashboard')">

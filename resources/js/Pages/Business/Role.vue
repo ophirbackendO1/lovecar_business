@@ -39,8 +39,27 @@
                                                         <h3>Business Account</h3>
                                                     </div>
 
-                                                    <div class="col-md-6">
-                                                        <button class="form-control">Select User</button>
+                                                    <div class="col-md-6 flex justify-between">
+                                                        <div class="relative">
+                                                            <input v-model="user_code" type="text"
+                                                                class="form-control me-2" placeholder="Enter User Code">
+
+                                                            <button v-if="user_code" @click="clearName()"
+                                                                class="absolute top-0 -right-2 text-black px-2 py-1">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                                    viewBox="0 0 24 24" stroke-width="1.5"
+                                                                    stroke="currentColor" class="size-6">
+                                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                                        d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                                                                </svg>
+
+                                                            </button>
+                                                        </div>
+
+
+
+                                                        <button @click="getBusinessOwnerAcc"
+                                                            class="btn btn-success btn-sm">Add</button>
                                                     </div>
 
                                                     <div class="col-md-6 mt-4">
@@ -48,15 +67,16 @@
                                                     </div>
 
                                                     <div class="col-md-6 mt-4">
-                                                        <select name="" id="" class="form-control">
+                                                        <select @change="handleRoleChange($event)" name="" id="" class="form-control">
                                                             <option value="" class="text-center">Select Role</option>
-                                                            <option value="" class="text-center">Admin</option>
-                                                            <option value="" class="text-center">Co-Admin</option>
+                                                            <option value="Admin" class="text-center">Admin</option>
+                                                            <option value="Co-Admin" class="text-center">Co-Admin</option>
                                                         </select>
                                                     </div>
                                                 </div>
                                                 <div class="modal-footer">
-                                                    <button type="button" class="form-control text-white"
+                                                    <button @click="assignRole" type="button" data-bs-dismiss="modal"
+                                                        class="form-control text-white"
                                                         :style="{ backgroundColor: $themeColor }">Add</button>
                                                 </div>
                                             </div>
@@ -89,7 +109,8 @@
                                         <div class="modal-dialog">
                                             <div class="modal-content">
                                                 <div class="modal-header border-0">
-                                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Leave From This Business?</h1>
+                                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Leave From This
+                                                        Business?</h1>
                                                     <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                         aria-label="Close"></button>
                                                 </div>
@@ -97,9 +118,11 @@
                                                     Are you sure to leave from this Business?
                                                 </div>
                                                 <div class="modal-footer border-0 flex justify-between">
-                                                    <button type="button" class="form-control"
-                                                        data-bs-dismiss="modal" :style="{border:`1px solid ${themeColor}`}">Cancel</button>
-                                                    <button @click="leaveBusiness" type="button" class="form-control text-white" :style="{backgroundColor:$themeColor}">Confirm</button>
+                                                    <button type="button" class="form-control" data-bs-dismiss="modal"
+                                                        :style="{ border: `1px solid ${themeColor}` }">Cancel</button>
+                                                    <button @click="leaveBusiness" type="button"
+                                                        class="form-control text-white"
+                                                        :style="{ backgroundColor: $themeColor }">Confirm</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -124,6 +147,7 @@
                                         </thead>
 
                                         <tbody>
+
                                             <tr v-for="businessOwner in businessOwners">
                                                 <td>{{ businessOwner.business_owner_id }}</td>
                                                 <td>{{ checkMe(businessOwner.business_owner_id, businessOwner.name) }}
@@ -173,17 +197,19 @@ onMounted(() => {
     }
 
     loading.value = true;
-    axios.get(`${baseUrl}/shops/business_ownerships/?shop_id=${props.shop_id}`, {
+    axios.get(`${baseUrl}/shops/business_ownerships?shop_id=${props.shop_id}`, {
         headers: {
             Authorization: `Bearer ${token}`
         }
     })
         .then((response) => {
             businessOwners.value = response.data.data;
+            console.log(businessOwners.value);
             loading.value = false;
         })
         .catch((error) => {
             loading.value = false;
+            console.log(error);
         })
 })
 
@@ -201,6 +227,76 @@ const checkMe = (ids, name) => {
             return name;
         }
     }
+}
+const user_code = ref();
+const user_data = ref(
+    {
+        shop_id : props.shop_id,
+        business_owner_id : null,
+        role : ''
+    }
+)
+const getBusinessOwnerAcc = () => {
+    let token = localStorage.getItem('token')
+
+    if (!token) {
+        router.get('/login');
+    }
+
+    loading.value = true;
+    axios.get(`${baseUrl}/shops/business_ownerships/getBusinessOwnerByUserCode?user_code=${user_code.value}&shop_id=${props.shop_id}`, {
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    })
+        .then((response) => {
+            console.log(response.data.data);
+            businessOwners.value.forEach(businessOwner => {
+                if(businessOwner.business_owner_id == response.data.data.id){
+                    alert('no');
+                }
+            })
+            user_code.value = response.data.data.name;
+            user_data.value.business_owner_id = response.data.data.id;
+            loading.value = false;
+
+
+        })
+        .catch((error) => {
+            loading.value = false;
+            console.log(error);
+        })
+}
+
+const clearName = () => {
+    user_code.value = null;
+}
+
+const handleRoleChange = (event) => {
+    user_data.value.role = event.target.value;
+    console.log(user_data.value);
+}
+
+const assignRole = () => {
+    let token = localStorage.getItem('token')
+
+    if (!token) {
+        router.get('/login');
+    }
+
+    loading.value = true;
+    axios.post(`${baseUrl}/shops/business_ownerships`, user_data.value, {
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    })
+        .then((response) => {
+            businessOwners.value = response.data.data;
+            loading.value = false;
+        })
+        .catch((error) => {
+            loading.value = false;
+        })
 }
 </script>
 
