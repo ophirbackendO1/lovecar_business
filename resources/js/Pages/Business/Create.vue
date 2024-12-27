@@ -90,7 +90,7 @@
                                     <h3>ဆိုင်ဖွင့်ရက်များ</h3>
                                     <div class="flex justify-center items-center">
                                         <div class="chips d-flex">
-                                            <span v-for="(day, index) in days" :key="day" @click="toggleDay(day)"
+                                            <span v-for="(day, index) in days" :key="day" @click="toggleDay(index)"
                                                 style="cursor:pointer;border-radius:15px"
                                                 :style="{ borderColor: $themeColor, backgroundColor: selectedDays.includes(index) ? $themeColor : '' }"
                                                 :class="['w-11 h-10 border-2 p-2 me-3 flex justify-center items-center', selectedDays.includes(index) ? ['text-white font-bold'] : '']">{{
@@ -161,7 +161,7 @@
                         </div>
 
                         <v-row class="my-3 mx-14">
-                            <v-col v-for="(box, index) in serviceItemBoxes" :key="index" cols="6">
+                            <v-col v-for="(box, index) in serviceBoxes" :key="index" cols="6">
                                 <div
                                     class="border-2 border-danger flxex justify-center items-center position-relative p-5">
                                     <v-row class="flex">
@@ -170,7 +170,7 @@
                                         </v-col>
 
                                         <v-col>
-                                            <select v-model="tempForm.selectedServiceId"
+                                            <select v-model="tempForm.service_id"
                                                 @click="getServiceItem($event.target.value)" id=""
                                                 class="form-control w-full py-3">
                                                 <option value="null">အမျိုးအစားရွေးချယ်မည်</option>
@@ -190,7 +190,7 @@
 
                                         <v-col>
 
-                                            <v-select v-model="tempForm.selectedServiceItemId" :items="service_items"
+                                            <v-select v-model="tempForm.service_item_id" :items="service_items"
                                                 label="ကုန်ပစ္စည်းများနှင့် ဝန်ဆောင်မှုများ‌ရွေးချယ်မည်"
                                                 item-title="name" item-value="id" multiple persistent-hint></v-select>
                                         </v-col>
@@ -207,7 +207,7 @@
                     </div>
 
                     <!-- 4 price  -->
-                    <div class="price">
+                    <!-- <div class="price">
                         <v-row>
                             <div class="flex p-4 items-center">
                                 <span
@@ -232,7 +232,7 @@
                             </v-col>
                         </v-row>
 
-                    </div>
+                    </div> -->
 
                     <!-- images -->
                     <div class="images">
@@ -331,16 +331,14 @@ const states = ref([])
 const cities = ref([])
 const services = ref([])
 const tempForm = useForm({
-    selectedServiceId: null,
-    selectedServiceItemId: null
+    service_id: null,
+    service_item_id: null
 })
 const service_items = ref([])
-const serviceItemBoxes = ref([])
+const serviceBoxes = ref([])
 
 
-const toggleDay = (day) => {
-
-    const dayIndex = days.value.indexOf(day);
+const toggleDay = (dayIndex) => {
     if (selectedDays.value.includes(dayIndex)) {
         selectedDays.value = selectedDays.value.filter(d => d !== dayIndex);
     } else {
@@ -387,17 +385,17 @@ const selectedService = (serviceId) => {
 }
 
 
-const selectedServiceItems = (serviceItemIds) => {
-    if (!serviceItemIds || typeof serviceItemIds[Symbol.iterator] !== 'function') {
-        console.error("Invalid serviceItemIds:", serviceItemIds); // Log error for debugging
-        return [];
-    }
+// const selectedServiceItems = (serviceItemIds) => {
+//     if (!serviceItemIds || typeof serviceItemIds[Symbol.iterator] !== 'function') {
+//         console.error("Invalid serviceItemIds:", serviceItemIds); // Log error for debugging
+//         return [];
+//     }
 
-    return Array.from(serviceItemIds).map(id => {
-        const serviceItem = service_items.value.find(serviceItem => serviceItem.id === Number(id));
-        return serviceItem ? serviceItem.name : null;
-    });
-};
+//     return Array.from(serviceItemIds).map(id => {
+//         const serviceItem = service_items.value.find(serviceItem => serviceItem.id === Number(id));
+//         return serviceItem ? serviceItem.name : null;
+//     });
+// };
 
 
 const getCity = async (event) => {
@@ -412,16 +410,18 @@ const getServiceItem = async (serviceId) => {
     );
 
     service_items.value = data.data;
-    console.log(service_items.value);
 
 }
 
 const addServiceBox = () => {
-    serviceItemBoxes.value.push({ services: null })
+    serviceBoxes.value.push({
+        service_id : null,
+        service_item_id : null,
+    })
 }
 
 const removeServiceItemBox = (index) => {
-    serviceItemBoxes.value.splice(index, 1);
+    serviceBoxes.value.splice(index, 1);
 };
 
 const logoPreview = ref(null)
@@ -443,6 +443,8 @@ const handleImageFileChange = (event, index) => {
     if (fileImage) {
         images.value[index].preview = URL.createObjectURL(fileImage);
     }
+
+    images.value.push({preview:null})
 }
 
 const clearImagePreview = (from, index = null) => {

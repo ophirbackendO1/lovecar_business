@@ -47,7 +47,7 @@ onMounted(() => {
                 },
             })
             .then(response => {
-                console.log(response.data);
+                console.log(response.data.data);
                 businessOwner.value = response.data.data;
                 localStorage.setItem('authUser', JSON.stringify(businessOwner.value));
             })

@@ -36,4 +36,10 @@ class BusinessController extends Controller
             'shop_id' => $request->shop_id
         ]);
     }
+
+    public function review(Request $request){
+        return Inertia::render('Business/Review', [
+            'shop_id' => $request->shop_id
+        ]);
+    }
 }

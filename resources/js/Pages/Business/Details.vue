@@ -67,7 +67,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-4" style="cursor:pointer;">
+                        <Link :href="route('business.review')" class="col-4" style="cursor:pointer;" >
                             <div class="rounded-lg border shadow p-3 flex flex-col justify-between"
                                 style="height:130px;">
                                 <div>
@@ -79,7 +79,7 @@
                                 <div class="fw-bold" style="font-size:50px">{{ formatNumber(business?.reviews_count) }}
                                 </div>
                             </div>
-                        </div>
+                        </Link>
                         <div class="col-4">
                             <div class="rounded-lg border shadow p-3 flex flex-col justify-between"
                                 style="height:130px;">
@@ -97,8 +97,8 @@
                     <div class="col-12 my-5">
                         <div class="chips d-flex">
                             <span v-for="(day, index) in days" :key="day" style="border-radius:15px"
-                                :style="{ borderColor: $themeColor, backgroundColor: selectedDays.includes(index.toString()) ? $themeColor : '' }"
-                                :class="['w-12 h-10 border-2 p-2 me-3 flex justify-center items-center', selectedDays.includes(index.toString()) ? ['text-white font-bold'] : '']">{{
+                                :style="{ borderColor: $themeColor, backgroundColor: selectedDays?.includes(index.toString()) ? $themeColor : '' }"
+                                :class="['w-12 h-10 border-2 p-2 me-3 flex justify-center items-center', selectedDays?.includes(index.toString()) ? ['text-white font-bold'] : '']">{{
                                     day }}</span>
                         </div>
                     </div>
@@ -199,7 +199,7 @@ import Carloader from '../Components/Carloader.vue';
 import Stars from '../Components/Stars.vue';
 import BackButton from '../Components/BackButton.vue';
 import { onMounted, ref, inject } from 'vue';
-import { defineComponent } from 'vue';
+import { route } from 'ziggy-js';
 import { GoogleMap, Marker } from 'vue3-google-map';
 const baseUrl = inject('baseUrl');
 

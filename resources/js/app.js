@@ -3,6 +3,8 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import '../css/app.css';
 import { createApp, h } from 'vue'
 import { createInertiaApp } from '@inertiajs/vue3'
+import Toast from "vue-toastification";
+import "vue-toastification/dist/index.css";
 import axios from 'axios';
 import { Link } from '@inertiajs/vue3';
 import { route } from 'ziggy-js';
@@ -54,6 +56,7 @@ createInertiaApp({
       app.provide('baseUrl','https://lovecar.autos/api');
       app.component("font-awesome-icon", FontAwesomeIcon);
       app.use(vuetify);
+      app.use(Toast);
       app.mount(el);
   },
 })

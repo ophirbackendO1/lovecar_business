@@ -22,4 +22,5 @@ Route::group(['prefix' => '/business','controller' => BusinessController::class,
     Route::get('/dailyUpdate', 'dailyUpdate')->name('dailyUpdate');
     Route::get('/permission', 'permission')->name('permission');
     Route::get('/roles', 'role')->name('role');
+    Route::get('/reviews', 'review')->name('review');
 });
