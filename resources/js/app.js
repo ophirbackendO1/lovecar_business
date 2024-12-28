@@ -7,7 +7,7 @@ import Toast from "vue-toastification";
 import "vue-toastification/dist/index.css";
 import axios from 'axios';
 import { Link } from '@inertiajs/vue3';
-import { route } from 'ziggy-js';
+
 
 // Vuetify
 import 'vuetify/styles'

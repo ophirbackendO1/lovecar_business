@@ -23,8 +23,8 @@
                                     {{ business?.name }}
                                 </div>
                                 <div class="flex items-center" style="margin-top:-10px">
-                                    <Stars />
-                                    <span class="ms-1">{{ business?.ratings }}</span>
+
+                                    <Stars :ratings="business?.ratings" />
                                 </div>
                                 <div class="text-muted" style="font-weight:500">
                                     {{ business?.phone }}
@@ -67,7 +67,7 @@
                                 </div>
                             </div>
                         </div>
-                        <Link :href="route('business.review')" class="col-4" style="cursor:pointer;" >
+                        <Link :href="route('business.review', {shop_id : props.shop_id})" class="col-4" style="cursor:pointer;" >
                             <div class="rounded-lg border shadow p-3 flex flex-col justify-between"
                                 style="height:130px;">
                                 <div>

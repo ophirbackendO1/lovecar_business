@@ -2,7 +2,7 @@
     <div v-if="shopId" :style="{ backgroundColor: $themeColor }" class="button-container caret-violet-800"
         style="position:fixed;top:100px;left:50%;transform: translate(-50%);">
 
-        <Link :href="route('dashboard')">
+        <Link :href="route('dashboard')" class="">
         <button class="button">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                 stroke="currentColor" class="size-6">
