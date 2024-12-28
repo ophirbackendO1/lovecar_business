@@ -6,7 +6,7 @@
         </div>
         <div class="mt-5">
             <v-row class="flex justify-center items-center h-full">
-                <v-col cols="8" class="border-2 border-danger">
+                <v-col cols="8" class="border-2 border-danger my-10">
 
                     <v-row class="">
                         <v-col cols="6" class="">
@@ -170,8 +170,8 @@
                                         </v-col>
 
                                         <v-col>
-                                            <select v-model="tempForm.service_id"
-                                                @click="getServiceItem($event.target.value)" id=""
+                                            <select v-model="box.service_id"
+                                                @click="getServiceItem($event.target.value, index)" id=""
                                                 class="form-control w-full py-3">
                                                 <option value="null">အမျိုးအစားရွေးချယ်မည်</option>
                                                 <option v-for="service in services" :key="service" :value="service.id">
@@ -190,9 +190,9 @@
 
                                         <v-col>
 
-                                            <v-select v-model="tempForm.service_item_id" :items="service_items"
+                                            <v-select v-model="box.items" :items="service_items[index]"
                                                 label="ကုန်ပစ္စည်းများနှင့် ဝန်ဆောင်မှုများ‌ရွေးချယ်မည်"
-                                                item-title="name" item-value="id" multiple persistent-hint></v-select>
+                                                item-title="name" return-object multiple persistent-hint></v-select>
                                         </v-col>
 
 
@@ -207,7 +207,7 @@
                     </div>
 
                     <!-- 4 price  -->
-                    <!-- <div class="price">
+                    <div class="price">
                         <v-row>
                             <div class="flex p-4 items-center">
                                 <span
@@ -217,22 +217,27 @@
                             </div>
                         </v-row>
 
-                        <v-row class="mx-14">
-                            <v-col v-if=selectedService(tempForm.selectedServiceId) cols="6 border">
-                                <h3>{{ selectedService(tempForm.selectedServiceId) }}</h3>
-                                <div v-for="(item, index) in selectedServiceItems(tempForm.selectedServiceItemId)"
-                                    class="row flex justify-between mt-5">
-                                    <div class="col-md-8">
-                                        <p>{{ item }}</p>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <input type="number" class="form-control">
+                        <v-row class="mx-14" v-if="serviceBoxes">
+                            <v-col cols="6" v-for="(service, service_index) in serviceBoxes" :key="service_index">
+                                <!-- <h3>{{ selectedService(tempForm.selectedServiceId) }}</h3> -->
+                                <div
+                                    class="row flex justify-between mt-5 mx-1 border py-3 rounded-lg">
+                                    <span>
+                                        {{ selectedService(service.service_id) }}
+                                    </span>
+                                    <div class="row" v-for="service_item, item_index in service.items" :key="item_index">
+                                        <div class="col-md-8">
+                                            <input disabled type="text" class="form-control my-2 py-3" :value="service_item.name">
+                                        </div>
+                                        <div class="col-md-4">
+                                            <input type="number" class="form-control my-2 py-3" v-model="item_prices[service_index][item_index]">
+                                        </div>
                                     </div>
                                 </div>
                             </v-col>
                         </v-row>
 
-                    </div> -->
+                    </div>
 
                     <!-- images -->
                     <div class="images">
@@ -244,7 +249,6 @@
                                 <p class="text-danger ms-3 fs-5">လုပ်ငန်းပုံများ</p>
                             </div>
                         </v-row>
-                        {{ images }}
                         <v-row>
                             <v-col cols="12" class="flex">
                                 <div v-for="(image, index) in images" :key="index"
@@ -272,7 +276,7 @@
                                     <label :for="`fileImageUpload-${index}`" class="absolute inset-0"
                                         v-if="image.preview">
                                         <img :src="image.preview" alt="Uploaded Image"
-                                            class="object-cover w-full h-full" />
+                                            class="object-cover w-full h-full" style="object-fit:cover;object-position:center" />
 
                                         <button @click="clearImagePreview('image', index)"
                                             class="absolute top-0 right-0 text-black px-2 py-1">
@@ -288,6 +292,11 @@
 
                             </v-col>
                         </v-row>
+                        <div class="flex justify-center my-6">
+                            <button class="text-white py-2 px-10 rounded-lg" :style="{backgroundColor: $themeColor }" @click="submit">
+                                Submit
+                            </button>
+                        </div>
                     </div>
                 </v-col>
 
@@ -318,7 +327,7 @@ const form = useForm({
     logo: null,
     categories: [],
     services: [],
-    image: [],
+    images: [],
     notes: [],
 });
 
@@ -330,13 +339,9 @@ const categories = ref([])
 const states = ref([])
 const cities = ref([])
 const services = ref([])
-const tempForm = useForm({
-    service_id: null,
-    service_item_id: null
-})
 const service_items = ref([])
 const serviceBoxes = ref([])
-
+const item_prices = ref([]);
 
 const toggleDay = (dayIndex) => {
     if (selectedDays.value.includes(dayIndex)) {
@@ -403,21 +408,25 @@ const getCity = async (event) => {
     cities.value = await axios.get(`${baseUrl}/getCity?state_id=` + event.target.value);
 };
 
-const getServiceItem = async (serviceId) => {
+const getServiceItem = async (serviceId, index) => {
 
-    let data = await axios.get(
-        `${baseUrl}/shops/service_items/only_service_items?service_id=` + serviceId
-    );
+    if (serviceId) {
+        let data = await axios.get(
+            `${baseUrl}/shops/service_items/only_service_items?service_id=` + serviceId
+        );
 
-    service_items.value = data.data;
+        service_items.value[index] = data.data;
+    }
+
 
 }
 
 const addServiceBox = () => {
     serviceBoxes.value.push({
-        service_id : null,
-        service_item_id : null,
+        service_id: null,
+        items: [],
     })
+    item_prices.value.push({})
 }
 
 const removeServiceItemBox = (index) => {
@@ -442,9 +451,10 @@ const handleImageFileChange = (event, index) => {
     const fileImage = event.target.files[0];
     if (fileImage) {
         images.value[index].preview = URL.createObjectURL(fileImage);
+        form.images.push(fileImage);
     }
 
-    images.value.push({preview:null})
+    images.value.push({ preview: null })
 }
 
 const clearImagePreview = (from, index = null) => {
@@ -452,10 +462,40 @@ const clearImagePreview = (from, index = null) => {
         logoPreview.value = null;
     } else {
         images.value[index].preview = null;
+        images.value.splice(index, 1);
     }
 }
 
+const submit = () => {
 
+    serviceBoxes.value.forEach((service, index) => {
+
+        let items = [];
+
+        service.items.forEach((item, itemIndex) => {
+            items.push({
+                service_item_id: item.id,
+                price: item_prices.value[index][itemIndex] ?? null
+            })
+        })
+
+        form.services.push({
+            service_id: service.service_id,
+            items : items
+        });
+
+    })
+
+    let token = localStorage.getItem('token');
+
+    axios.post(`${baseUrl}/shops`,form,{
+        headers: {
+            Authorization: `Bearer ${token}`,
+        }
+    }).then(response => {
+        console.log(response)
+    })
+}
 
 
 </script>
