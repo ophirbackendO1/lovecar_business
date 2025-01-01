@@ -241,12 +241,12 @@
                                                                     <div class=" mt-4">
                                                                         <select v-model="tempForm.selectedRole" name=""
                                                                             id="" class="form-control">
-                                                                            <option value="" class="">Select
+                                                                            <option value="null" class="">Select
                                                                                 Role</option>
-                                                                            <option value="Admin" class="text-center">
+                                                                            <option value="Admin">
                                                                                 Admin</option>
                                                                             <option value="Co-Admin"
-                                                                                class="text-center">Co-Admin
+                                                                                >Co-Admin
                                                                             </option>
                                                                         </select>
                                                                     </div>

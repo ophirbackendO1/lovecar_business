@@ -4,10 +4,12 @@
             v-if="loading">
             <Carloader style="margin-bottom: 100px;" />
         </div>
+        
         <div class="mt-5">
             <v-row class="flex justify-center items-center h-full">
                 <v-col cols="8" class="border-2 border-danger my-10">
-
+                    
+                    <BackButton />
                     <v-row class="">
                         <v-col cols="6" class="">
                             <div class="d-flex p-4 items-center">
@@ -17,10 +19,10 @@
                                 <p class="text-danger ms-3 fs-5">လုပ်ငန်းအချက်အလက်</p>
                             </div>
 
-                            <div class="w-60 h-60 flex items-center justify-center relative mx-14 rounded-md"
-                                style="border:1px solid black;background-color:lightgray;">
+                            <div class="flex items-center justify-center relative mx-14 rounded-md"
+                                style="border:1px solid black;background-color:lightgray;width:200px;height:200px;">
                                 <input type="file" id="fileUpload" class="absolute inset-0 opacity-0 cursor-pointer"
-                                    @change="handleLogoFileChange" />
+                                    @change="handleLogoFileChange" @input="form.logo = $event.target.files[0]"/>
 
                                 <label for="fileUpload"
                                     class="cursor-pointer text-center text-red-500 hover:text-red-700 flex flex-col items-center justify-center space-y-2"
@@ -55,22 +57,22 @@
                             <v-row class="information">
                                 <v-col cols="12">
                                     <div class="flex justify-center">
-                                        <span class="me-5 w-36">လုပ်ငန်းနာမည်</span>
-                                        <v-textarea label="" row-height="15" rows="1" variant="outlined"></v-textarea>
+                                        <span class="w-36">လုပ်ငန်းနာမည်</span>
+                                        <v-textarea label="" v-model="form.name" row-height="15" rows="1" variant="outlined"></v-textarea>
                                     </div>
                                 </v-col>
 
                                 <v-col cols="12">
                                     <div class="flex justify-center">
-                                        <span class="me-5 w-36">ဖုန်းနံပါတ်</span>
-                                        <v-textarea label="" row-height="15" rows="1" variant="outlined"></v-textarea>
+                                        <span class="w-36">ဖုန်းနံပါတ်</span>
+                                        <v-textarea label="" v-model="form.phone" row-height="15" rows="1" variant="outlined"></v-textarea>
                                     </div>
                                 </v-col>
 
                                 <v-col cols="12">
                                     <div class="flex justify-center">
-                                        <span class="me-5 w-36">နေရပ်လိပ်စာ</span>
-                                        <v-textarea label="" row-height="15" rows="1" variant="outlined"></v-textarea>
+                                        <span class="w-36">နေရပ်လိပ်စာ</span>
+                                        <v-textarea label="" v-model="form.address" row-height="15" rows="1" variant="outlined"></v-textarea>
                                     </div>
                                 </v-col>
 
@@ -81,6 +83,9 @@
                                 <v-col cols="4">
                                     <div>
                                         <h3>ဆိုင်ဖွင့်ချိန်</h3>
+
+
+                                        
                                     </div>
                                 </v-col>
                             </v-row>
@@ -140,8 +145,8 @@
                             </v-col>
                         </v-row>
 
-                        <v-row class="mx-14 my-5">
-                            <v-textarea label="Location" row-height="15" rows="1" variant="outlined"></v-textarea>
+                        <v-row class="mx-16 my-5">
+                            <v-textarea label="Location" v-model="location" row-height="15" rows="1" variant="outlined"></v-textarea>
                         </v-row>
                     </div>
 
@@ -309,6 +314,7 @@
 import Layout from '../Layouts/Layout.vue';
 import Carloader from '../Components/Carloader.vue'
 import CreateButton from '../Components/CreateButton.vue';
+import BackButton from '../Components/BackButton.vue';
 import DeleteButton from '../Components/DeleteButton.vue';
 import { useForm } from '@inertiajs/vue3';
 import { onMounted, ref, inject } from 'vue';
@@ -338,6 +344,7 @@ const selectedDays = ref([])
 const categories = ref([])
 const states = ref([])
 const cities = ref([])
+const location = ref()
 const services = ref([])
 const service_items = ref([])
 const serviceBoxes = ref([])
@@ -348,6 +355,19 @@ const toggleDay = (dayIndex) => {
         selectedDays.value = selectedDays.value.filter(d => d !== dayIndex);
     } else {
         selectedDays.value.push(dayIndex);
+    }
+}
+
+
+const setLocation = () => {
+    if (location?.value) {
+        if (location.value.includes(',')) {
+            let data = location.value.split(',');
+            form.latitude = data[0];
+            form.longitude = data[1].replace(/\s+/g, '');
+        } else {
+            toast.warning('Location format is wrong');
+        }
     }
 }
 
@@ -444,6 +464,7 @@ const handleLogoFileChange = () => {
 
     if (file) {
         logoPreview.value = URL.createObjectURL(file);
+        
     }
 }
 
@@ -468,6 +489,11 @@ const clearImagePreview = (from, index = null) => {
 
 const submit = () => {
 
+
+    setLocation()
+
+    form.opening_days = selectedDays.value;
+
     serviceBoxes.value.forEach((service, index) => {
 
         let items = [];
@@ -487,7 +513,6 @@ const submit = () => {
     })
 
     let token = localStorage.getItem('token');
-
     axios.post(`${baseUrl}/shops`,form,{
         headers: {
             Authorization: `Bearer ${token}`,
