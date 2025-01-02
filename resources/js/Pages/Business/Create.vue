@@ -4,11 +4,11 @@
             v-if="loading">
             <Carloader style="margin-bottom: 100px;" />
         </div>
-        
+
         <div class="mt-5">
             <v-row class="flex justify-center items-center h-full">
                 <v-col cols="8" class="border-2 border-danger my-10">
-                    
+
                     <BackButton />
                     <v-row class="">
                         <v-col cols="6" class="">
@@ -22,7 +22,7 @@
                             <div class="flex items-center justify-center relative mx-14 rounded-md"
                                 style="border:1px solid black;background-color:lightgray;width:200px;height:200px;">
                                 <input type="file" id="fileUpload" class="absolute inset-0 opacity-0 cursor-pointer"
-                                    @change="handleLogoFileChange" @input="form.logo = $event.target.files[0]"/>
+                                    @change="handleLogoFileChange" @input="form.logo = $event.target.files[0]" />
 
                                 <label for="fileUpload"
                                     class="cursor-pointer text-center text-red-500 hover:text-red-700 flex flex-col items-center justify-center space-y-2"
@@ -58,21 +58,24 @@
                                 <v-col cols="12">
                                     <div class="flex justify-center">
                                         <span class="w-36">လုပ်ငန်းနာမည်</span>
-                                        <v-textarea label="" v-model="form.name" row-height="15" rows="1" variant="outlined"></v-textarea>
+                                        <v-textarea label="" v-model="form.name" row-height="15" rows="1"
+                                            variant="outlined"></v-textarea>
                                     </div>
                                 </v-col>
 
                                 <v-col cols="12">
                                     <div class="flex justify-center">
                                         <span class="w-36">ဖုန်းနံပါတ်</span>
-                                        <v-textarea label="" v-model="form.phone" row-height="15" rows="1" variant="outlined"></v-textarea>
+                                        <v-textarea label="" v-model="form.phone" row-height="15" rows="1"
+                                            variant="outlined"></v-textarea>
                                     </div>
                                 </v-col>
 
                                 <v-col cols="12">
                                     <div class="flex justify-center">
                                         <span class="w-36">နေရပ်လိပ်စာ</span>
-                                        <v-textarea label="" v-model="form.address" row-height="15" rows="1" variant="outlined"></v-textarea>
+                                        <v-textarea label="" v-model="form.address" row-height="15" rows="1"
+                                            variant="outlined"></v-textarea>
                                     </div>
                                 </v-col>
 
@@ -80,51 +83,34 @@
                             </v-row>
 
                             <v-row class="shop-opening-time">
-                                <v-col cols="4">
+                                <v-col cols="12">
                                     <div>
                                         <h3>ဆိုင်ဖွင့်ချိန်</h3>
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
+                                        <v-row>
 
 
-                                        
-=======
-=======
->>>>>>> Stashed changes
-                                        <v-container>
-                                            <v-row justify="space-around">
-                                                <!-- Time Picker in Menu -->
-                                                <v-col cols="11" sm="5">
+                                            <v-col cols="12" sm="5">
+                                                <v-text-field v-model="time" :active="menu2" :focus="menu2"
+                                                    label="Picker in menu" prepend-icon="mdi-clock-time-four-outline"
+                                                    readonly>
                                                     <v-menu v-model="menu2" :close-on-content-click="false"
-                                                        transition="scale-transition" offset-y>
-                                                        <template v-slot:activator="{ on, attrs }">
-                                                            <v-text-field v-model="time" label="Picker in menu"
-                                                                prepend-icon="mdi-clock-time-four-outline" readonly
-                                                                v-bind="attrs" v-on="on"></v-text-field>
-                                                        </template>
-                                                        <v-time-picker v-model="time" full-width
-                                                            @click:save="menu2 = false"></v-time-picker>
+                                                        activator="parent" transition="scale-transition">
+                                                        <v-time-picker v-if="menu2" v-model="time"
+                                                            full-width></v-time-picker>
                                                     </v-menu>
-                                                </v-col>
+                                                </v-text-field>
+                                            </v-col>
 
-                                                <!-- Time Picker in Dialog -->
-                                                <v-col cols="11" sm="5">
-                                                    <v-dialog v-model="modal2" width="auto">
-                                                        <template v-slot:activator="{ on, attrs }">
-                                                            <v-text-field v-model="time" label="Picker in dialog"
-                                                                prepend-icon="mdi-clock-time-four-outline" readonly
-                                                                v-bind="attrs" v-on="on"></v-text-field>
-                                                        </template>
-                                                        <v-time-picker v-model="time"
-                                                            @click:save="modal2 = false"></v-time-picker>
+                                            <v-col cols="12" sm="5">
+                                                <v-text-field v-model="time" :active="modal2" :focused="modal2"
+                                                    label="Picker in dialog" prepend-icon="mdi-clock-time-four-outline"
+                                                    readonly>
+                                                    <v-dialog v-model="modal2" activator="parent" width="auto">
+                                                        <v-time-picker v-if="modal2" v-model="time"></v-time-picker>
                                                     </v-dialog>
-                                                </v-col>
-                                            </v-row>
-                                        </v-container>
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
+                                                </v-text-field>
+                                            </v-col>
+                                        </v-row>
                                     </div>
                                 </v-col>
                             </v-row>
@@ -185,7 +171,8 @@
                         </v-row>
 
                         <v-row class="mx-16 my-5">
-                            <v-textarea label="Location" v-model="location" row-height="15" rows="1" variant="outlined"></v-textarea>
+                            <v-textarea label="Location" v-model="location" row-height="15" rows="1"
+                                variant="outlined"></v-textarea>
                         </v-row>
                     </div>
 
@@ -205,6 +192,7 @@
                         </div>
 
                         <v-row class="my-3 mx-14">
+                           
                             <v-col v-for="(box, index) in serviceBoxes" :key="index" cols="6">
                                 <div
                                     class="border-2 border-danger flxex justify-center items-center position-relative p-5">
@@ -511,7 +499,7 @@ const handleLogoFileChange = () => {
 
     if (file) {
         logoPreview.value = URL.createObjectURL(file);
-        
+
     }
 }
 
@@ -560,17 +548,8 @@ const submit = () => {
     })
 
     let token = localStorage.getItem('token');
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-    axios.post(`${baseUrl}/shops`,form,{
-=======
 
     axios.post(`${baseUrl}/shops`, form, {
->>>>>>> Stashed changes
-=======
-
-    axios.post(`${baseUrl}/shops`, form, {
->>>>>>> Stashed changes
         headers: {
             Authorization: `Bearer ${token}`,
         }

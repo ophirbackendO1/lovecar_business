@@ -80,7 +80,7 @@
                                 </div>
                             </div>
                         </Link>
-                        <div class="col-4">
+                        <Link :href="route('business.view', {shop_id : props.shop_id})" class="col-4" style="cursor:pointer;">
                             <div class="rounded-lg border shadow p-3 flex flex-col justify-between"
                                 style="height:130px;">
                                 <div>
@@ -92,7 +92,7 @@
                                 <div class="fw-bold" style="font-size:50px">{{
                                     formatNumber(business?.shop_views_count) }}</div>
                             </div>
-                        </div>
+                        </Link>
                     </div>
                     <div class="col-12 my-5">
                         <div class="chips d-flex">

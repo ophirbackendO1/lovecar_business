@@ -24,4 +24,5 @@ Route::group(['prefix' => '/business','controller' => BusinessController::class,
     Route::get('/permission', 'permission')->name('permission');
     Route::get('/roles', 'role')->name('role');
     Route::get('/reviews', 'review')->name('review');
+    Route::get('/views', 'view')->name('view');
 });
