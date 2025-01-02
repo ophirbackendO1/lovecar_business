@@ -19,6 +19,7 @@ Route::group(['prefix' => '/dashboard','controller' => DashboardController::clas
 Route::group(['prefix' => '/business','controller' => BusinessController::class, "as" => "business."] ,function(){
     Route::get('/details','details');
     Route::get('/create', 'create')->name('create');
+    Route::get('/edit', 'edit')->name('edit');
     Route::get('/dailyUpdate', 'dailyUpdate')->name('dailyUpdate');
     Route::get('/permission', 'permission')->name('permission');
     Route::get('/roles', 'role')->name('role');

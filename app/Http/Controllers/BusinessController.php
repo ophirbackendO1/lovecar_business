@@ -19,6 +19,10 @@ class BusinessController extends Controller
         return Inertia::render('Business/Create');
     }
 
+    public function edit(){
+        return Inertia::render('Business/Edit');
+    }
+
     public function dailyUpdate(Request $request){
         return Inertia::render('Business/DailyUpdate', [
             'shop_id' => $request->shop_id

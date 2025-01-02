@@ -83,9 +83,48 @@
                                 <v-col cols="4">
                                     <div>
                                         <h3>ဆိုင်ဖွင့်ချိန်</h3>
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
 
 
                                         
+=======
+=======
+>>>>>>> Stashed changes
+                                        <v-container>
+                                            <v-row justify="space-around">
+                                                <!-- Time Picker in Menu -->
+                                                <v-col cols="11" sm="5">
+                                                    <v-menu v-model="menu2" :close-on-content-click="false"
+                                                        transition="scale-transition" offset-y>
+                                                        <template v-slot:activator="{ on, attrs }">
+                                                            <v-text-field v-model="time" label="Picker in menu"
+                                                                prepend-icon="mdi-clock-time-four-outline" readonly
+                                                                v-bind="attrs" v-on="on"></v-text-field>
+                                                        </template>
+                                                        <v-time-picker v-model="time" full-width
+                                                            @click:save="menu2 = false"></v-time-picker>
+                                                    </v-menu>
+                                                </v-col>
+
+                                                <!-- Time Picker in Dialog -->
+                                                <v-col cols="11" sm="5">
+                                                    <v-dialog v-model="modal2" width="auto">
+                                                        <template v-slot:activator="{ on, attrs }">
+                                                            <v-text-field v-model="time" label="Picker in dialog"
+                                                                prepend-icon="mdi-clock-time-four-outline" readonly
+                                                                v-bind="attrs" v-on="on"></v-text-field>
+                                                        </template>
+                                                        <v-time-picker v-model="time"
+                                                            @click:save="modal2 = false"></v-time-picker>
+                                                    </v-dialog>
+                                                </v-col>
+                                            </v-row>
+                                        </v-container>
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
                                     </div>
                                 </v-col>
                             </v-row>
@@ -225,17 +264,19 @@
                         <v-row class="mx-14" v-if="serviceBoxes">
                             <v-col cols="6" v-for="(service, service_index) in serviceBoxes" :key="service_index">
                                 <!-- <h3>{{ selectedService(tempForm.selectedServiceId) }}</h3> -->
-                                <div
-                                    class="row flex justify-between mt-5 mx-1 border py-3 rounded-lg">
+                                <div class="row flex justify-between mt-5 mx-1 border py-3 rounded-lg">
                                     <span>
                                         {{ selectedService(service.service_id) }}
                                     </span>
-                                    <div class="row" v-for="service_item, item_index in service.items" :key="item_index">
+                                    <div class="row" v-for="service_item, item_index in service.items"
+                                        :key="item_index">
                                         <div class="col-md-8">
-                                            <input disabled type="text" class="form-control my-2 py-3" :value="service_item.name">
+                                            <input disabled type="text" class="form-control my-2 py-3"
+                                                :value="service_item.name">
                                         </div>
                                         <div class="col-md-4">
-                                            <input type="number" class="form-control my-2 py-3" v-model="item_prices[service_index][item_index]">
+                                            <input type="number" class="form-control my-2 py-3"
+                                                v-model="item_prices[service_index][item_index]">
                                         </div>
                                     </div>
                                 </div>
@@ -281,7 +322,8 @@
                                     <label :for="`fileImageUpload-${index}`" class="absolute inset-0"
                                         v-if="image.preview">
                                         <img :src="image.preview" alt="Uploaded Image"
-                                            class="object-cover w-full h-full" style="object-fit:cover;object-position:center" />
+                                            class="object-cover w-full h-full"
+                                            style="object-fit:cover;object-position:center" />
 
                                         <button @click="clearImagePreview('image', index)"
                                             class="absolute top-0 right-0 text-black px-2 py-1">
@@ -298,7 +340,8 @@
                             </v-col>
                         </v-row>
                         <div class="flex justify-center my-6">
-                            <button class="text-white py-2 px-10 rounded-lg" :style="{backgroundColor: $themeColor }" @click="submit">
+                            <button class="text-white py-2 px-10 rounded-lg" :style="{ backgroundColor: $themeColor }"
+                                @click="submit">
                                 Submit
                             </button>
                         </div>
@@ -316,6 +359,7 @@ import Carloader from '../Components/Carloader.vue'
 import CreateButton from '../Components/CreateButton.vue';
 import BackButton from '../Components/BackButton.vue';
 import DeleteButton from '../Components/DeleteButton.vue';
+import { VTimePicker } from 'vuetify/labs/VTimePicker'
 import { useForm } from '@inertiajs/vue3';
 import { onMounted, ref, inject } from 'vue';
 
@@ -349,6 +393,9 @@ const services = ref([])
 const service_items = ref([])
 const serviceBoxes = ref([])
 const item_prices = ref([]);
+const menu2 = ref(false);
+const modal2 = ref(false);
+const time = ref(null)
 
 const toggleDay = (dayIndex) => {
     if (selectedDays.value.includes(dayIndex)) {
@@ -507,13 +554,23 @@ const submit = () => {
 
         form.services.push({
             service_id: service.service_id,
-            items : items
+            items: items
         });
 
     })
 
     let token = localStorage.getItem('token');
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
     axios.post(`${baseUrl}/shops`,form,{
+=======
+
+    axios.post(`${baseUrl}/shops`, form, {
+>>>>>>> Stashed changes
+=======
+
+    axios.post(`${baseUrl}/shops`, form, {
+>>>>>>> Stashed changes
         headers: {
             Authorization: `Bearer ${token}`,
         }

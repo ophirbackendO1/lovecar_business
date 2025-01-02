@@ -48,6 +48,7 @@
         </button>
         </Link>
 
+        <Link :href="route('business.edit', { shop_id: shopId })">
         <button class="button">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
                 <path
@@ -56,10 +57,10 @@
                     d="M5.25 5.25a3 3 0 0 0-3 3v10.5a3 3 0 0 0 3 3h10.5a3 3 0 0 0 3-3V13.5a.75.75 0 0 0-1.5 0v5.25a1.5 1.5 0 0 1-1.5 1.5H5.25a1.5 1.5 0 0 1-1.5-1.5V8.25a1.5 1.5 0 0 1 1.5-1.5h5.25a.75.75 0 0 0 0-1.5H5.25Z" />
             </svg>
 
-
             <h3 class="ms-2">Edit Shop Info</h3>
 
         </button>
+        </Link>
     </div>
 
 </template>
