@@ -11,7 +11,7 @@
 
                     <BackButton />
                     <v-row class="">
-                        <v-col cols="6" class="">
+                        <v-col cols="5" class="">
                             <div class="d-flex p-4 items-center">
                                 <span
                                     class="bg-danger text-white w-10 h-10 flex justify-center items-center rounded-full"
@@ -53,7 +53,7 @@
 
                         </v-col>
 
-                        <v-col cols="6" class="mt-24">
+                        <v-col cols="7" class="mt-24">
                             <v-row class="information">
                                 <v-col cols="12">
                                     <div class="flex justify-center">
@@ -74,7 +74,7 @@
                                 <v-col cols="12">
                                     <div class="flex justify-center">
                                         <span class="w-36">နေရပ်လိပ်စာ</span>
-                                        <v-textarea label="" v-model="form.address" row-height="15" rows="1"
+                                        <v-textarea label="" v-model="form.address" row-height="5" rows="4"
                                             variant="outlined"></v-textarea>
                                     </div>
                                 </v-col>
@@ -85,32 +85,77 @@
                             <v-row class="shop-opening-time">
                                 <v-col cols="12">
                                     <div>
-                                        <h3>ဆိုင်ဖွင့်ချိန်</h3>
                                         <v-row>
+                                            <!-- Picker in Menu -->
+                                            <v-col cols="12" sm="5" class=" position-relative">
+                                                <h3 class="mb-5">ဆိုင်ဖွင့်ချိန်</h3>
 
+                                                <div class="w-75" style="position:relative;">
+                                                    <v-text-field class="" v-model="form.opening_hour" :active="menu"
+                                                        :focus="menu" label="Select Time"
+                                                        prepend-icon="mdi-clock-time-four-outline" readonly>
+                                                        <v-menu v-model="menu" :close-on-content-click="false"
+                                                            activator="parent" transition="scale-transition">
+                                                            <v-time-picker v-if="menu" v-model="form.opening_hour" full-width
+                                                                format="ampm"></v-time-picker>
+                                                        </v-menu>
+                                                    </v-text-field>
 
-                                            <v-col cols="12" sm="5">
-                                                <v-text-field v-model="time" :active="menu2" :focus="menu2"
-                                                    label="Picker in menu" prepend-icon="mdi-clock-time-four-outline"
-                                                    readonly>
-                                                    <v-menu v-model="menu2" :close-on-content-click="false"
-                                                        activator="parent" transition="scale-transition">
-                                                        <v-time-picker v-if="menu2" v-model="time"
-                                                            full-width></v-time-picker>
-                                                    </v-menu>
-                                                </v-text-field>
+                                                    <div class="bg-dark">
+                                                        <div style="position: absolute; top:-10px;right:-60px;;">
+                                                            <div class="my-1 fw-bold px-3"
+                                                                @click="opening_time_format = 'AM'"
+                                                                :class="opening_time_format == 'AM' ? 'bg-gray-300' : ''"
+                                                                style="border-radius:7px;padding:6px;cursor:pointer">
+                                                                AM
+                                                            </div>
+                                                            <div class="my-1 fw-bold px-3"
+                                                                @click="opening_time_format = 'PM'"
+                                                                :class="opening_time_format == 'PM' ? 'bg-gray-300' : ''"
+                                                                style="border-radius:7px;padding:6px;cursor:pointer">
+                                                                PM
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </v-col>
 
+                                            <!-- Picker in Dialog -->
                                             <v-col cols="12" sm="5">
-                                                <v-text-field v-model="time" :active="modal2" :focused="modal2"
-                                                    label="Picker in dialog" prepend-icon="mdi-clock-time-four-outline"
-                                                    readonly>
-                                                    <v-dialog v-model="modal2" activator="parent" width="auto">
-                                                        <v-time-picker v-if="modal2" v-model="time"></v-time-picker>
-                                                    </v-dialog>
-                                                </v-text-field>
+                                                <h3 class="mb-5">ဆိုင်ပိတ်ချိန်</h3>
+
+                                                <div class="w-75" style="position:relative;">
+                                                    <v-text-field class="" v-model="form.closing_hour" :active="menu2"
+                                                        :focus="menu2" label="Select Time"
+                                                        prepend-icon="mdi-clock-time-four-outline" readonly>
+                                                        <v-menu v-model="menu2" :close-on-content-click="false"
+                                                            activator="parent" transition="scale-transition">
+                                                            <v-time-picker v-if="menu2" v-model="form.closing_hour" full-width
+                                                                format="ampm"></v-time-picker>
+                                                        </v-menu>
+                                                    </v-text-field>
+
+                                                    <div class="bg-dark">
+                                                        <div style="position: absolute; top:-10px;right:-60px;;">
+                                                            <div class="my-1 fw-bold px-3"
+                                                                @click="closing_time_format = 'AM'"
+                                                                :class="closing_time_format == 'AM' ? 'bg-gray-300' : ''"
+                                                                style="border-radius:7px;padding:6px;cursor:pointer">
+                                                                AM
+                                                            </div>
+                                                            <div class="my-1 fw-bold px-3"
+                                                                @click="closing_time_format = 'PM'"
+                                                                :class="closing_time_format == 'PM' ? 'bg-gray-300' : ''"
+                                                                style="border-radius:7px;padding:6px;cursor:pointer">
+                                                                PM
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
                                             </v-col>
                                         </v-row>
+
                                     </div>
                                 </v-col>
                             </v-row>
@@ -192,7 +237,7 @@
                         </div>
 
                         <v-row class="my-3 mx-14">
-                           
+
                             <v-col v-for="(box, index) in serviceBoxes" :key="index" cols="6">
                                 <div
                                     class="border-2 border-danger flxex justify-center items-center position-relative p-5">
@@ -284,9 +329,9 @@
                             </div>
                         </v-row>
                         <v-row>
-                            <v-col cols="12" class="flex">
+                            <v-col cols="12" class="flex mx-14">
                                 <div v-for="(image, index) in images" :key="index"
-                                    class="square-image mx-16 flex justify-center items-center relative"
+                                    class="square-image me-3 flex justify-center items-center relative"
                                     style="width:150px;height:150px;border:2px solid red;border-radius: 10px;overflow:hidden;">
                                     <input type="file" :id="`fileImageUpload-${index}`"
                                         class="absolute inset-0 opacity-0 cursor-pointer"
@@ -348,7 +393,7 @@ import CreateButton from '../Components/CreateButton.vue';
 import BackButton from '../Components/BackButton.vue';
 import DeleteButton from '../Components/DeleteButton.vue';
 import { VTimePicker } from 'vuetify/labs/VTimePicker'
-import { useForm } from '@inertiajs/vue3';
+import { router, useForm } from '@inertiajs/vue3';
 import { onMounted, ref, inject } from 'vue';
 
 const form = useForm({
@@ -366,11 +411,12 @@ const form = useForm({
     categories: [],
     services: [],
     images: [],
-    notes: [],
 });
 
 const loading = ref(false)
 const baseUrl = inject('baseUrl');
+const opening_time_format = ref('AM');
+const closing_time_format = ref('PM');
 const days = ref(['S', 'M', 'T', 'W', 'T', 'F', 'S'])
 const selectedDays = ref([])
 const categories = ref([])
@@ -381,10 +427,9 @@ const services = ref([])
 const service_items = ref([])
 const serviceBoxes = ref([])
 const item_prices = ref([]);
+const menu = ref(false);
 const menu2 = ref(false);
-const modal2 = ref(false);
-const time = ref(null)
-
+import { split } from "postcss/lib/list";
 const toggleDay = (dayIndex) => {
     if (selectedDays.value.includes(dayIndex)) {
         selectedDays.value = selectedDays.value.filter(d => d !== dayIndex);
@@ -476,6 +521,18 @@ const getServiceItem = async (serviceId, index) => {
 
 }
 
+const change24hrFormat = (time, format) => {
+
+    if (format == 'PM' && parseInt(split(time, ':')[0]) == 12) {
+        time = parseInt(split(time, ':')[0]) + 12 + ':' + split(time, ':')[1];
+    }
+    if (format == 'PM') {
+        time = parseInt(split(time, ':')[0]) + 12 + ':' + split(time, ':')[1];
+    }
+    return time + ':00';
+}
+
+
 const addServiceBox = () => {
     serviceBoxes.value.push({
         service_id: null,
@@ -547,6 +604,11 @@ const submit = () => {
 
     })
 
+    if (form.opening_hour && form.closing_hour) {
+        form.opening_hour = change24hrFormat(form.opening_hour, opening_time_format.value);
+        form.closing_hour = change24hrFormat(form.closing_hour, closing_time_format.value);
+    }
+
     let token = localStorage.getItem('token');
 
     axios.post(`${baseUrl}/shops`, form, {
@@ -555,6 +617,7 @@ const submit = () => {
         }
     }).then(response => {
         console.log(response)
+        router.replace('/dashboard');
     })
 }
 

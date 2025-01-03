@@ -158,7 +158,7 @@
                         <v-row class="mx-14">
                             <v-col cols="6">
 
-                                <select v-model="form.state_id" @change="getCity($event)" id=""
+                                <select v-model="form.state_id" @change="getCity($event.target.value)" id=""
                                     class="form-control py-3">
                                     <option value="null">Choose a State</option>
                                     <option v-for="state in states" :key="state" :value="state.id">{{ state.name }}
@@ -179,7 +179,6 @@
                         </v-row>
                     </div>
 
-                    {{ serviceBoxes }}
                     <!-- 3 -->
                     <div class="categories">
                         <v-row>
@@ -254,7 +253,6 @@
 
                         <v-row class="mx-14" v-if="serviceBoxes">
                             <v-col cols="6" v-for="(service, service_index) in serviceBoxes" :key="service_index">
-                                <!-- <h3>{{ selectedService(tempForm.selectedServiceId) }}</h3> -->
                                 <div class="row flex justify-between mt-5 mx-1 border py-3 rounded-lg">
                                     <span>
                                         {{ selectedService(service.service_id) }}
@@ -290,7 +288,7 @@
                         <v-row>
                             <v-col cols="12" class="flex mx-16">
 
-                                {{ previewImages }}
+
                                 <label v-for="(image, index) in previewImages" :key="index">
 
                                     <!-- Render image preview -->
@@ -356,7 +354,7 @@ import CreateButton from '../Components/CreateButton.vue';
 import BackButton from '../Components/BackButton.vue';
 import DeleteButton from '../Components/DeleteButton.vue';
 import { VTimePicker } from 'vuetify/labs/VTimePicker'
-import { useForm } from '@inertiajs/vue3';
+import { router, useForm } from '@inertiajs/vue3';
 import { onMounted, ref, inject, watch } from 'vue';
 
 const props = defineProps({
@@ -445,6 +443,8 @@ onMounted(() => {
             services.value = response[2].data.data;
             business.value = response[3].data.data;
 
+
+
             if (business.value) {
                 Object.keys(form).forEach((key) => {
                     form[key] = business.value[key] ?? form[key];
@@ -456,6 +456,9 @@ onMounted(() => {
 
                 location.value = formatLocation();
 
+                getCity(business.value?.state_id);
+                form.city_id = business.value?.city_id;
+
             }
 
             business.value?.opening_days.forEach(day => {
@@ -464,12 +467,15 @@ onMounted(() => {
 
 
             business.value?.services.forEach((service, index) => {
+
+                getServiceItem(service.id, index);
+
+                item_prices.value.push({});
+
                 let items = [];
                 service.items.forEach((item, itemIndex) => {
-                    items.push({
-                        service_item_id: item.id,
-                        price: null
-                    })
+                    items.push(item);
+                    item_prices.value[index][itemIndex] = item.price;
                 })
 
                 serviceBoxes.value.push({
@@ -489,6 +495,7 @@ onMounted(() => {
 })
 
 const form = useForm({
+    shop_id: props.shop_id,
     name: "",
     phone: "",
     address: "",
@@ -503,7 +510,6 @@ const form = useForm({
     categories: [],
     services: [],
     shop_images: [],
-    notes: [],
 });
 
 
@@ -513,22 +519,9 @@ const selectedService = (serviceId) => {
 }
 
 
-// const selectedServiceItems = (serviceItemIds) => {
-//     if (!serviceItemIds || typeof serviceItemIds[Symbol.iterator] !== 'function') {
-//         console.error("Invalid serviceItemIds:", serviceItemIds); // Log error for debugging
-//         return [];
-//     }
-
-//     return Array.from(serviceItemIds).map(id => {
-//         const serviceItem = service_items.value.find(serviceItem => serviceItem.id === Number(id));
-//         return serviceItem ? serviceItem.name : null;
-//     });
-// };
-
-
-const getCity = async (event) => {
+const getCity = async (state_id) => {
     form.city_id = null;
-    cities.value = await axios.get(`${baseUrl}/getCity?state_id=` + event.target.value);
+    cities.value = await axios.get(`${baseUrl}/getCity?state_id=` + state_id);
 };
 
 const getServiceItem = async (serviceId, index) => {
@@ -569,7 +562,7 @@ const handleImageFileChange = (event) => {
     const fileImage = event.target.files[0];
     if (fileImage) {
         const previewUrl = URL.createObjectURL(fileImage);
-        previewImages.value.push({preview:previewUrl});
+        previewImages.value.push({ preview: previewUrl });
     }
 
 }
@@ -588,32 +581,35 @@ const submit = () => {
     form.opening_days = selectedDays.value;
     setLocation()
 
-    serviceBoxes.value.forEach((service, index) => {
+    business.value?.services.forEach((service, index) => {
+
+        getServiceItem(service.id, index);
+
+        item_prices.value.push({});
 
         let items = [];
-
         service.items.forEach((item, itemIndex) => {
-            items.push({
-                service_item_id: item.id,
-                price: item_prices.value[index][itemIndex] ?? null
-            })
+            items.push(item);
+            item_prices.value[index][itemIndex] = item.price;
         })
 
-        form.services.push({
-            service_id: service.service_id,
+        serviceBoxes.value.push({
+            service_id: service.id,
             items: items
         });
-
     })
+
+
 
     let token = localStorage.getItem('token');
 
-    axios.post(`${baseUrl}/shops`, form, {
+    axios.post(`${baseUrl}/shops/update`, form, {
         headers: {
             Authorization: `Bearer ${token}`,
         }
     }).then(response => {
         console.log(response)
+        router.replace('/dashboard');
     })
 }
 
