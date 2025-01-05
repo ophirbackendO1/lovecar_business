@@ -429,6 +429,7 @@ const serviceBoxes = ref([])
 const item_prices = ref([]);
 const menu = ref(false);
 const menu2 = ref(false);
+
 import { split } from "postcss/lib/list";
 const toggleDay = (dayIndex) => {
     if (selectedDays.value.includes(dayIndex)) {

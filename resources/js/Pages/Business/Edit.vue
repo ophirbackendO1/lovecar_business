@@ -22,9 +22,9 @@
                             <div class="flex items-center justify-center relative mx-14 rounded-md"
                                 style="border:1px solid black;background-color:lightgray;width:200px;height:200px;">
                                 <input type="file" id="fileUpload" class="absolute inset-0 opacity-0 cursor-pointer"
-                                    @change="handleLogoFileChange" @input="form.logo = $event.target.files[0]" />
+                                    @change="handleLogoFileChange" @input="form.logo = $event.target.files[0]"/>
 
-                                <label v-if="!form.logo" for="fileUpload"
+                                <label v-if="!logoPreview" for="fileUpload"
                                     class="cursor-pointer text-center text-red-500 hover:text-red-700 flex flex-col items-center justify-center space-y-2">
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
                                         class="size-6">
@@ -36,8 +36,8 @@
                                     <span>Upload Logo</span>
                                 </label>
 
-                                <label for="fileUpload" class="absolute inset-0" v-if="form.logo">
-                                    <img :src="form.logo" alt="Uploaded Image" class="object-cover w-full h-full" />
+                                <label for="fileUpload" class="absolute inset-0" v-if="logoPreview">
+                                    <img :src="logoPreview" alt="Uploaded Image" class="object-cover w-full h-full" />
                                     <button @click="clearImagePreview('logo')"
                                         class="absolute top-0 right-0 text-white px-2 py-1">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
@@ -84,30 +84,74 @@
                             <v-row class="shop-opening-time">
                                 <v-col cols="12">
                                     <div>
-                                        <h3>ဆိုင်ဖွင့်ချိန်</h3>
                                         <v-row>
+                                            <!-- Picker in Menu -->
+                                            <v-col cols="12" sm="5" class=" position-relative">
+                                                <h3 class="mb-5">ဆိုင်ဖွင့်ချိန်</h3>
 
+                                                <div class="w-75" style="position:relative;">
+                                                    <v-text-field class="" v-model="form.opening_hour" :active="menu"
+                                                        :focus="menu" label="Select Time"
+                                                        prepend-icon="mdi-clock-time-four-outline" readonly>
+                                                        <v-menu v-model="menu" :close-on-content-click="false"
+                                                            activator="parent" transition="scale-transition">
+                                                            <v-time-picker v-if="menu" v-model="form.opening_hour"
+                                                                full-width format="ampm"></v-time-picker>
+                                                        </v-menu>
+                                                    </v-text-field>
 
-                                            <v-col cols="12" sm="5">
-                                                <v-text-field v-model="time" :active="menu2" :focus="menu2"
-                                                    label="Picker in menu" prepend-icon="mdi-clock-time-four-outline"
-                                                    readonly>
-                                                    <v-menu v-model="menu2" :close-on-content-click="false"
-                                                        activator="parent" transition="scale-transition">
-                                                        <v-time-picker v-if="menu2" v-model="time"
-                                                            full-width></v-time-picker>
-                                                    </v-menu>
-                                                </v-text-field>
+                                                    <div class="bg-dark">
+                                                        <div style="position: absolute; top:-10px;right:-60px;;">
+                                                            <div class="my-1 fw-bold px-3"
+                                                                @click="opening_time_format = 'AM'"
+                                                                :class="opening_time_format == 'AM' ? 'bg-gray-300' : ''"
+                                                                style="border-radius:7px;padding:6px;cursor:pointer">
+                                                                AM
+                                                            </div>
+                                                            <div class="my-1 fw-bold px-3"
+                                                                @click="opening_time_format = 'PM'"
+                                                                :class="opening_time_format == 'PM' ? 'bg-gray-300' : ''"
+                                                                style="border-radius:7px;padding:6px;cursor:pointer">
+                                                                PM
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </v-col>
 
+                                            <!-- Picker in Dialog -->
                                             <v-col cols="12" sm="5">
-                                                <v-text-field v-model="time" :active="modal2" :focused="modal2"
-                                                    label="Picker in dialog" prepend-icon="mdi-clock-time-four-outline"
-                                                    readonly>
-                                                    <v-dialog v-model="modal2" activator="parent" width="auto">
-                                                        <v-time-picker v-if="modal2" v-model="time"></v-time-picker>
-                                                    </v-dialog>
-                                                </v-text-field>
+                                                <h3 class="mb-5">ဆိုင်ပိတ်ချိန်</h3>
+
+                                                <div class="w-75" style="position:relative;">
+                                                    <v-text-field class="" v-model="form.closing_hour" :active="menu2"
+                                                        :focus="menu2" label="Select Time"
+                                                        prepend-icon="mdi-clock-time-four-outline" readonly>
+                                                        <v-menu v-model="menu2" :close-on-content-click="false"
+                                                            activator="parent" transition="scale-transition">
+                                                            <v-time-picker v-if="menu2" v-model="form.closing_hour"
+                                                                full-width format="ampm"></v-time-picker>
+                                                        </v-menu>
+                                                    </v-text-field>
+
+                                                    <div class="bg-dark">
+                                                        <div style="position: absolute; top:-10px;right:-60px;;">
+                                                            <div class="my-1 fw-bold px-3"
+                                                                @click="closing_time_format = 'AM'"
+                                                                :class="closing_time_format == 'AM' ? 'bg-gray-300' : ''"
+                                                                style="border-radius:7px;padding:6px;cursor:pointer">
+                                                                AM
+                                                            </div>
+                                                            <div class="my-1 fw-bold px-3"
+                                                                @click="closing_time_format = 'PM'"
+                                                                :class="closing_time_format == 'PM' ? 'bg-gray-300' : ''"
+                                                                style="border-radius:7px;padding:6px;cursor:pointer">
+                                                                PM
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
                                             </v-col>
                                         </v-row>
                                     </div>
@@ -356,6 +400,7 @@ import DeleteButton from '../Components/DeleteButton.vue';
 import { VTimePicker } from 'vuetify/labs/VTimePicker'
 import { router, useForm } from '@inertiajs/vue3';
 import { onMounted, ref, inject, watch } from 'vue';
+import { split } from "postcss/lib/list";
 
 const props = defineProps({
     shop_id: Number
@@ -375,11 +420,9 @@ const services = ref([])
 const service_items = ref([])
 const serviceBoxes = ref([])
 const item_prices = ref([]);
+const menu = ref(false);
 const menu2 = ref(false);
-const modal2 = ref(false);
-const time = ref(null)
-
-
+const logoPreview = ref();
 const toggleDay = (dayIndex) => {
     if (selectedDays.value.includes(dayIndex)) {
         selectedDays.value = selectedDays.value.filter(d => d !== dayIndex);
@@ -450,6 +493,14 @@ onMounted(() => {
                     form[key] = business.value[key] ?? form[key];
                 });
 
+                if (form.opening_hour != null) {
+                    form.opening_hour = change12hrFormat(form.opening_hour);
+                }
+
+                if (form.closing_hour != null) {
+                    form.closing_hour = change12hrFormat(form.closing_hour);
+                }
+
                 form.shop_images.forEach(image => {
                     previewImages.value.push({ preview: image });
                 })
@@ -510,6 +561,7 @@ const form = useForm({
     categories: [],
     services: [],
     shop_images: [],
+    delete_images: [],
 });
 
 
@@ -537,6 +589,34 @@ const getServiceItem = async (serviceId, index) => {
 
 }
 
+const change12hrFormat = (time) => {
+
+
+    if (parseInt(split(time, ':')[0]) > 12) {
+        return parseInt(split(time, ':')[0]) - 12 + ':' + split(time, ':')[1];
+    } else {
+        return parseInt(split(time, ':')[0]) + ':' + split(time, ':')[1];
+    }
+
+}
+
+
+const change24hrFormat = (time, format) => {
+
+    if (format == 'PM' && parseInt(split(time, ':')[0]) == 12) {
+        time = parseInt(split(time, ':')[0]) + 12 + ':' + split(time, ':')[1];
+    }
+    if (format == 'PM') {
+        time = parseInt(split(time, ':')[0]) + 12 + ':' + split(time, ':')[1];
+    }
+    return time + ':00';
+}
+
+
+const opening_time_format = ref('AM');
+const closing_time_format = ref('PM');
+
+
 const addServiceBox = () => {
     serviceBoxes.value.push({
         service_id: null,
@@ -554,7 +634,7 @@ const handleLogoFileChange = () => {
     const file = event.target.files[0];
 
     if (file) {
-        form.logo = URL.createObjectURL(file);
+        logoPreview.value = URL.createObjectURL(file);
     }
 }
 
@@ -569,6 +649,7 @@ const handleImageFileChange = (event) => {
 
 const clearImagePreview = (from, index = null) => {
     if (from == 'logo') {
+        logoPreview.value = null;
         form.logo = null;
     } else {
         previewImages.value[index] = null;
@@ -578,26 +659,24 @@ const clearImagePreview = (from, index = null) => {
 
 const submit = () => {
 
+
+    if (form.opening_hour && form.closing_hour) {
+        form.opening_hour = change24hrFormat(form.opening_hour, opening_time_format.value);
+        form.closing_hour = change24hrFormat(form.closing_hour, closing_time_format.value);
+    }
+
+
     form.opening_days = selectedDays.value;
     setLocation()
 
-    business.value?.services.forEach((service, index) => {
-
-        getServiceItem(service.id, index);
-
-        item_prices.value.push({});
-
-        let items = [];
-        service.items.forEach((item, itemIndex) => {
-            items.push(item);
-            item_prices.value[index][itemIndex] = item.price;
-        })
-
-        serviceBoxes.value.push({
-            service_id: service.id,
-            items: items
-        });
-    })
+    form.services = serviceBoxes.value.map((service, serviceIndex) => ({
+        ...service,
+        items: service.items.map((item, itemIndex) => ({
+            service_item_id: item.id,
+            price: item_prices.value[serviceIndex][itemIndex],
+            is_active: item.is_active
+        }))
+    }));
 
 
 

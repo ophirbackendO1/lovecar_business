@@ -97,8 +97,8 @@
                     <div class="col-12 my-5">
                         <div class="chips d-flex">
                             <span v-for="(day, index) in days" :key="day" style="border-radius:15px"
-                                :style="{ borderColor: $themeColor, backgroundColor: selectedDays?.includes(index.toString()) ? $themeColor : '' }"
-                                :class="['w-12 h-10 border-2 p-2 me-3 flex justify-center items-center', selectedDays?.includes(index.toString()) ? ['text-white font-bold'] : '']">{{
+                                :style="{ borderColor: $themeColor, backgroundColor: selectedDays?.includes(index) ? $themeColor : '' }"
+                                :class="['w-12 h-10 border-2 p-2 me-3 flex justify-center items-center', selectedDays?.includes(index) ? ['text-white font-bold'] : '']">{{
                                     day }}</span>
                         </div>
                     </div>

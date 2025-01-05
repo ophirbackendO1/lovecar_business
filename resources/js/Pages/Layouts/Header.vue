@@ -11,7 +11,8 @@
 
             <div class="flex justify-center items-center">
                 <img src="../images/profile.png" style="width:60px;" alt="">
-                <p>{{ businessOwner?.name }} <span v-if="businessOwner?.role"> - ({{ businessOwner?.role }})</span> </p>
+            <p>{{ businessOwner?.name }} <span v-if="businessOwner?.role"> - ({{ businessOwner?.role?.charAt(0).toUpperCase() + businessOwner?.role?.slice(1) }}
+                    )</span> </p>
             </div>
         </div>
     </div>
