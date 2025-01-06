@@ -61,6 +61,8 @@
                                         <v-textarea label="" v-model="form.name" row-height="15" rows="1"
                                             variant="outlined"></v-textarea>
                                     </div>
+
+                                    <ErrorMessage class="mx-36" :text="formError?.name?.[0]" />
                                 </v-col>
 
                                 <v-col cols="12">
@@ -69,14 +71,18 @@
                                         <v-textarea label="" v-model="form.phone" row-height="15" rows="1"
                                             variant="outlined"></v-textarea>
                                     </div>
+                                    <ErrorMessage class="mx-36" :text="formError?.phone?.[0]" />
+
                                 </v-col>
 
                                 <v-col cols="12">
                                     <div class="flex justify-center">
                                         <span class="w-36">နေရပ်လိပ်စာ</span>
-                                        <v-textarea label="" v-model="form.address" row-height="5" rows="4"
+                                        <v-textarea label="" v-model="form.address" row-height="5" rows="3"
                                             variant="outlined"></v-textarea>
                                     </div>
+                                    <ErrorMessage class="mx-36" :text="formError?.address?.[0]" />
+
                                 </v-col>
 
 
@@ -392,9 +398,11 @@ import Carloader from '../Components/Carloader.vue'
 import CreateButton from '../Components/CreateButton.vue';
 import BackButton from '../Components/BackButton.vue';
 import DeleteButton from '../Components/DeleteButton.vue';
+import ErrorMessage from '../Components/ErrorMessage.vue';
 import { VTimePicker } from 'vuetify/labs/VTimePicker'
 import { router, useForm } from '@inertiajs/vue3';
 import { onMounted, ref, inject } from 'vue';
+import { useToast } from 'vue-toastification';
 
 const form = useForm({
     name: "",
@@ -410,7 +418,7 @@ const form = useForm({
     logo: null,
     categories: [],
     services: [],
-    images: [],
+    image: [],
 });
 
 const loading = ref(false)
@@ -429,8 +437,11 @@ const serviceBoxes = ref([])
 const item_prices = ref([]);
 const menu = ref(false);
 const menu2 = ref(false);
-
+const formError = ref();
+const toast = useToast();
 import { split } from "postcss/lib/list";
+
+
 const toggleDay = (dayIndex) => {
     if (selectedDays.value.includes(dayIndex)) {
         selectedDays.value = selectedDays.value.filter(d => d !== dayIndex);
@@ -565,7 +576,7 @@ const handleImageFileChange = (event, index) => {
     const fileImage = event.target.files[0];
     if (fileImage) {
         images.value[index].preview = URL.createObjectURL(fileImage);
-        form.images.push(fileImage);
+        form.image.push(fileImage);
     }
 
     images.value.push({ preview: null })
@@ -582,6 +593,10 @@ const clearImagePreview = (from, index = null) => {
 
 const submit = () => {
 
+    if(!form.state_id && !form.city_id){
+        toast.warning('City is required');
+        return;
+    }
 
     setLocation()
 
@@ -610,15 +625,23 @@ const submit = () => {
         form.closing_hour = change24hrFormat(form.closing_hour, closing_time_format.value);
     }
 
+
     let token = localStorage.getItem('token');
 
     axios.post(`${baseUrl}/shops`, form, {
         headers: {
             Authorization: `Bearer ${token}`,
+            'Content-Type': 'multipart/form-data'
         }
+
     }).then(response => {
         console.log(response)
         router.replace('/dashboard');
+    })
+
+    .catch(error => {
+        console.log(error.response.data.errors);
+       formError.value = error.response.data.errors;
     })
 }
 

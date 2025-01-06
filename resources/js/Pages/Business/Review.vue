@@ -94,6 +94,7 @@ import Stars from "../Components/Stars.vue";
 import { ref, onMounted, inject } from "vue";
 import { useForm } from "@inertiajs/vue3";
 import { useRouter } from 'vue-router';
+import { useToast } from 'vue-toastification';
 
 const props = defineProps({
     shop_id: Number,
@@ -103,11 +104,11 @@ const router = useRouter();
 const loading = ref(false);
 const baseUrl = inject('baseUrl')
 const feedbacks = ref([])
-
+const toast = useToast();
 const replyBox = ref([])
 
 const form = useForm({
-    text: [] 
+    text: []
 })
 
 const shopName = ref()

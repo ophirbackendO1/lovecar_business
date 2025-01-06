@@ -24,6 +24,7 @@ class BusinessController extends Controller
             'shop_id' => $request->shop_id
         ]);
     }
+    
 
     public function dailyUpdate(Request $request){
         return Inertia::render('Business/DailyUpdate', [

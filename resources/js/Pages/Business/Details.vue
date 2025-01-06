@@ -97,8 +97,8 @@
                     <div class="col-12 my-5">
                         <div class="chips d-flex">
                             <span v-for="(day, index) in days" :key="day" style="border-radius:15px"
-                                :style="{ borderColor: $themeColor, backgroundColor: selectedDays?.includes(index) ? $themeColor : '' }"
-                                :class="['w-12 h-10 border-2 p-2 me-3 flex justify-center items-center', selectedDays?.includes(index) ? ['text-white font-bold'] : '']">{{
+                                :style="{ borderColor: $themeColor, backgroundColor: selectedDays?.includes(index).toString() ? $themeColor : '' }"
+                                :class="['w-12 h-10 border-2 p-2 me-3 flex justify-center items-center', selectedDays?.includes(index).toString() ? ['text-white font-bold'] : '']">{{
                                     day }}</span>
                         </div>
                     </div>
@@ -156,7 +156,7 @@
                     <div class="border rounded-md shadow-md p-3 mt-3">
                         <h4 class="font-semibold mb-2" style="font-size:13px;" :style="{ color: $themeColor }">Opening
                             Hours</h4>
-                        <p class="mx-4 font-semibold" style="font-size:13px;">From <span class="font-bold fs-4">{{
+                        <p v-if="business?.opening_hour" class="mx-4 font-semibold" style="font-size:13px;">From <span class="font-bold fs-4">{{
                             change12hrsFormat(business?.opening_hour) }}</span> <span
                                 class="mx-2 font-semibold">To</span> <span class="font-bold fs-4">{{
                                     change12hrsFormat(business?.closing_hour) }}</span></p>

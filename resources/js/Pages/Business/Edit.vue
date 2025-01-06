@@ -5,13 +5,13 @@
             <Carloader style="margin-bottom: 100px;" />
         </div>
 
-        <div class="mt-5">
+        <div class="mt-10">
             <v-row class="flex justify-center items-center h-full">
                 <v-col cols="8" class="border-2 border-danger my-10">
 
                     <BackButton />
                     <v-row class="">
-                        <v-col cols="6" class="">
+                        <v-col cols="5" class="">
                             <div class="d-flex p-4 items-center">
                                 <span
                                     class="bg-danger text-white w-10 h-10 flex justify-center items-center rounded-full"
@@ -22,9 +22,9 @@
                             <div class="flex items-center justify-center relative mx-14 rounded-md"
                                 style="border:1px solid black;background-color:lightgray;width:200px;height:200px;">
                                 <input type="file" id="fileUpload" class="absolute inset-0 opacity-0 cursor-pointer"
-                                    @change="handleLogoFileChange" @input="form.logo = $event.target.files[0]"/>
+                                    @change="handleLogoFileChange" @input="form.logo = $event.target.files[0]" />
 
-                                <label v-if="!logoPreview" for="fileUpload"
+                                <label v-if="!form.logo" for="fileUpload"
                                     class="cursor-pointer text-center text-red-500 hover:text-red-700 flex flex-col items-center justify-center space-y-2">
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
                                         class="size-6">
@@ -35,10 +35,17 @@
 
                                     <span>Upload Logo</span>
                                 </label>
+                                <label for="fileUpload" class="absolute inset-0">
 
-                                <label for="fileUpload" class="absolute inset-0" v-if="logoPreview">
-                                    <img :src="logoPreview" alt="Uploaded Image" class="object-cover w-full h-full" />
-                                    <button @click="clearImagePreview('logo')"
+                                    <img v-if="logoPreview" :src="logoPreview" alt="Uploaded Image"
+                                        class="object-cover w-full h-full" />
+
+                                    <img v-else-if="form.logo" :src="form.logo" alt="Uploaded Image"
+                                        class="object-cover w-full h-full" />
+
+                                    <img v-else src="" alt="">
+
+                                    <button v-if="form.logo" @click="clearImagePreview('logo')"
                                         class="absolute top-0 right-0 text-white px-2 py-1">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                             stroke-width="1.5" stroke="currentColor" class="size-6">
@@ -52,7 +59,7 @@
 
                         </v-col>
 
-                        <v-col cols="6" class="mt-24">
+                        <v-col cols="7" class="mt-24">
                             <v-row class="information">
                                 <v-col cols="12">
                                     <div class="flex justify-center">
@@ -338,7 +345,7 @@
                                     <!-- Render image preview -->
 
                                     <div class="relative">
-                                        <img :src="image.preview" class="object-cover w-full h-full me-3"
+                                        <img :src="image" class="object-cover w-full h-full me-3"
                                             style="width:150px;height:150px;border:2px solid red;border-radius: 10px;overflow:hidden;" />
 
                                         <!-- Button to remove image -->
@@ -353,10 +360,11 @@
                                     </div>
                                 </label>
 
+
                                 <div class="square-image flex justify-center items-center relative"
                                     style="width:150px;height:150px;border:2px solid red;border-radius: 10px;overflow:hidden;">
                                     <input type="file" class="absolute inset-0 opacity-0 cursor-pointer"
-                                        @change="handleImageFileChange($event)" />
+                                        @change="handleImageFileChange($event)" @input="form.image = $event.target.files[0]" />
 
 
                                     <label for="fileImageUpload"
@@ -449,7 +457,6 @@ const previewImages = ref([])
 
 onMounted(() => {
 
-
     const formatLocation = () => {
         if (business.value) {
             return business.value.latitude + ", " + business.value.longitude;
@@ -486,12 +493,12 @@ onMounted(() => {
             services.value = response[2].data.data;
             business.value = response[3].data.data;
 
-
-
             if (business.value) {
                 Object.keys(form).forEach((key) => {
                     form[key] = business.value[key] ?? form[key];
                 });
+
+                console.log(form);
 
                 if (form.opening_hour != null) {
                     form.opening_hour = change12hrFormat(form.opening_hour);
@@ -502,14 +509,13 @@ onMounted(() => {
                 }
 
                 form.shop_images.forEach(image => {
-                    previewImages.value.push({ preview: image });
+                    previewImages.value.push(image)
                 })
 
                 location.value = formatLocation();
 
                 getCity(business.value?.state_id);
                 form.city_id = business.value?.city_id;
-
             }
 
             business.value?.opening_days.forEach(day => {
@@ -534,7 +540,6 @@ onMounted(() => {
                     items: items
                 });
             })
-
 
             loading.value = false;
 
@@ -561,6 +566,7 @@ const form = useForm({
     categories: [],
     services: [],
     shop_images: [],
+    image: [],
     delete_images: [],
 });
 
@@ -590,7 +596,6 @@ const getServiceItem = async (serviceId, index) => {
 }
 
 const change12hrFormat = (time) => {
-
 
     if (parseInt(split(time, ':')[0]) > 12) {
         return parseInt(split(time, ':')[0]) - 12 + ':' + split(time, ':')[1];
@@ -642,9 +647,8 @@ const handleImageFileChange = (event) => {
     const fileImage = event.target.files[0];
     if (fileImage) {
         const previewUrl = URL.createObjectURL(fileImage);
-        previewImages.value.push({ preview: previewUrl });
+        previewImages.value.push(previewUrl);
     }
-
 }
 
 const clearImagePreview = (from, index = null) => {
@@ -652,9 +656,18 @@ const clearImagePreview = (from, index = null) => {
         logoPreview.value = null;
         form.logo = null;
     } else {
-        previewImages.value[index] = null;
-        previewImages.value.splice(index, 1);
+
+        if (previewImages.value[index] != null) {
+            let imageName = previewImages.value[index].split('/').pop();
+            if (!form.delete_images.includes(imageName)) {
+                form.delete_images.push(imageName);
+            }
+            previewImages.value[index] = null;
+            previewImages.value.splice(index, 1);
+            form.shop_images[index] = null;
+        }
     }
+
 }
 
 const submit = () => {
@@ -679,15 +692,15 @@ const submit = () => {
     }));
 
 
-
     let token = localStorage.getItem('token');
 
     axios.post(`${baseUrl}/shops/update`, form, {
         headers: {
             Authorization: `Bearer ${token}`,
+            'Content-Type': 'multipart/form-data'
         }
     }).then(response => {
-        console.log(response)
+        console.log(response.data.data);
         router.replace('/dashboard');
     })
 }
