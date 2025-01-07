@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div >
         <button class="bin-button position-absolute right-1 top-1">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 39 7" class="bin-top">
                 <line stroke-width="4" stroke="white" y2="5" x2="39" y1="5"></line>

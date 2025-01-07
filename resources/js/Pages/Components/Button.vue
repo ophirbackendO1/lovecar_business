@@ -1,9 +1,9 @@
 <template>
     <button :style="{ backgroundColor: $themeColor }" class="btn text-white">
-        <span class="me-2">
+        <span class="">
             {{ text }}
         </span>
-            <font-awesome-icon v-if="!status" icon="fa-solid fa-wrench" />
+            <font-awesome-icon v-if="!status" class="ms-2" icon="fa-solid fa-wrench" />
     </button>
 </template>
 

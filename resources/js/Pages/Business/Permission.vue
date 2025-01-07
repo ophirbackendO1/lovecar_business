@@ -17,7 +17,7 @@
                                 Content Management
                             </h3>
 
-                            <div class="border mt-3 mx-3">
+                            <div class="border rounded-md mt-3 mx-3">
                                 <div class="flex justify-between items-center p-4">
                                     <h3>Updating Daily Info</h3>
                                     <div>
@@ -201,9 +201,9 @@ const togglePermission = (event, shopId, permissionKey, secondPermissionKey = nu
             }
         )
         .then((response) => {
-            loading.value = false;
             permission.value = response.data.data;
             console.log("Permission updated:", response.data);
+            toast.success('Permission changed successfully');
         })
 
         .catch((error) => {

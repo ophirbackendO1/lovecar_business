@@ -11,7 +11,7 @@
             <div v-else class="container p-4">
                 <v-row class="mb-4">
                     <v-col v-for="(service, index) in dailyUpdate?.services" :key="service.id" cols="6"
-                        class="border p-4">
+                        class="border rounded-md p-4">
                         <h3 class="mb-10 fs-5">{{ service.name }}</h3>
 
                         <div class="service-items">
@@ -98,7 +98,7 @@
                 </v-row>
 
                 <v-row class="flex justify-center mb-4">
-                    <v-col cols="6" class="border">
+                    <v-col cols="6" class="">
                         <h3 class="mb-5 mx-5">မှတ်ချက်ရေးရန်</h3>
 
                         <div v-for="(note, index) in form.notes" class="">
@@ -149,7 +149,8 @@ import Layout from "../Layouts/Layout.vue";
 import BackButton from "../Components/BackButton.vue";
 import Carloader from "../Components/Carloader.vue";
 import { ref, onMounted, inject } from "vue";
-import { useForm } from "@inertiajs/vue3";
+import { router, useForm } from "@inertiajs/vue3";
+import { Inertia } from '@inertiajs/inertia';
 const loading = ref(false);
 const dailyUpdate = ref(null);
 const baseUrl = inject("baseUrl");
@@ -252,7 +253,12 @@ const updateDaily = () => {
     })
 
         .then((response) => {
-            console.log(response.data);
+            console.log(response.data.data);
+            Inertia.visit('/business/details', {
+                method: 'get',
+                data: { shop_id: props.shop_id }
+            });
+
         })
 
         .catch((error) => {

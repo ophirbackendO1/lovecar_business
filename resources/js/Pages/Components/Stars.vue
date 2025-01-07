@@ -1,18 +1,7 @@
 <template>
 
     <div class="rating">
-        <template v-for="star in 5" :key="star">
-
-      <input
-        type="radio"
-        :id="'star' + (6 - star)"
-        name="rating"
-        :value="6 - star"
-        :checked="ratings === (6 - star)"
-        disabled
-      />
-      <label :for="'star' + (6 - star)"></label>
-    </template>
+        <v-rating hover readonly :length="5" :size="32" :model-value="ratings" active-color="warning" />
     </div>
 
 </template>
@@ -20,38 +9,37 @@
 <script setup>
 
 const props = defineProps({
-    ratings : {
-        type : Number,
-        required : true,
+    ratings: {
+        type: Number,
+        required: true,
     }
 })
 </script>
 
 <style scoped>
 .rating {
-  display: inline-block;
+    display: inline-block;
 }
 
 .rating input {
-  display: none;
+    display: none;
 }
 
 .rating label {
-  float: right;
-  cursor: pointer;
-  transition: color 0.3s;
+    float: right;
+    cursor: pointer;
+    transition: color 0.3s;
 }
 
 .rating label:before {
-  content: "\2605";
-  font-size: 30px;
+    content: "\2605";
+    font-size: 30px;
 }
 
-.rating input:checked ~ label,
+.rating input:checked~label,
 .rating label:hover,
-.rating label:hover ~ label {
-  color: #ffd700;
-  transition: color 0.3s;
+.rating label:hover~label {
+    color: #ffd700;
+    transition: color 0.3s;
 }
-
 </style>

@@ -35,14 +35,16 @@
                                                         aria-label="Close"></button>
                                                 </div>
                                                 <div class="row modal-body">
-                                                    <div class="col-md-6">
+                                                    <div class="col-md-5">
                                                         <h3>Business Account</h3>
                                                     </div>
 
-                                                    <div class="col-md-6 flex justify-between">
+                                                    <div class="col-md-7 flex justify-between">
                                                         <div class="relative">
                                                             <input v-model="user_code" type="text"
-                                                                class="form-control me-2" placeholder="Enter User Code">
+                                                                class="py-2 px-2 rounded-md border-0 outline-none text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-red-600 sm:text-sm sm:leading-6"
+                                                                :style="{ color: themeColor }"
+                                                                placeholder="Enter User Code">
 
                                                             <button v-if="user_code" @click="clearName()"
                                                                 class="absolute top-0 -right-2 text-black px-2 py-1">
@@ -58,7 +60,8 @@
 
 
                                                         <button @click="getBusinessOwnerAcc"
-                                                            class="btn btn-success btn-sm">Add</button>
+                                                            class="btn btn-sm text-white"
+                                                            :style="{ backgroundColor: $themeColor }">Add</button>
                                                     </div>
 
                                                     <div class="col-md-6 mt-4">
@@ -68,7 +71,7 @@
                                                     <div class="col-md-6 mt-4">
                                                         <select @change="handleRoleChange($event)" name="" id=""
                                                             class="form-control">
-                                                            <option value="" class="text-center">Select Role</option>
+
                                                             <option value="Admin" class="text-center">Admin</option>
                                                             <option value="Co-Admin" class="text-center">Co-Admin
                                                             </option>
@@ -90,47 +93,45 @@
 
                             <v-col cols="3">
                                 <div class="flex">
-                                    <button type="button" class="form-control" data-bs-toggle="modal"
-                                        data-bs-target="#leaveBusiness"
-                                        style="background-color:red;color:white;box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;">
-                                        <div class="flex justify-between">
-                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-                                                fill="currentColor" class="size-6">
-                                                <path fill-rule="evenodd"
-                                                    d="M16.5 4.478v.227a48.816 48.816 0 0 1 3.878.512.75.75 0 1 1-.256 1.478l-.209-.035-1.005 13.07a3 3 0 0 1-2.991 2.77H8.084a3 3 0 0 1-2.991-2.77L4.087 6.66l-.209.035a.75.75 0 0 1-.256-1.478A48.567 48.567 0 0 1 7.5 4.705v-.227c0-1.564 1.213-2.9 2.816-2.951a52.662 52.662 0 0 1 3.369 0c1.603.051 2.815 1.387 2.815 2.951Zm-6.136-1.452a51.196 51.196 0 0 1 3.273 0C14.39 3.05 15 3.684 15 4.478v.113a49.488 49.488 0 0 0-6 0v-.113c0-.794.609-1.428 1.364-1.452Zm-.355 5.945a.75.75 0 1 0-1.5.058l.347 9a.75.75 0 1 0 1.499-.058l-.346-9Zm5.48.058a.75.75 0 1 0-1.498-.058l-.347 9a.75.75 0 0 0 1.5.058l.345-9Z"
-                                                    clip-rule="evenodd" />
-                                            </svg>
+                                    <v-dialog max-width="500">
+                                        <template v-slot:activator="{ props: activatorProps }">
+                                            <button v-bind="activatorProps" type="button" class="form-control"
+                                                data-bs-toggle="modal" data-bs-target="#leaveBusiness"
+                                                style="background-color:red;color:white;box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;">
+                                                <div class="flex justify-between">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                                                        fill="currentColor" class="size-6">
+                                                        <path fill-rule="evenodd"
+                                                            d="M16.5 4.478v.227a48.816 48.816 0 0 1 3.878.512.75.75 0 1 1-.256 1.478l-.209-.035-1.005 13.07a3 3 0 0 1-2.991 2.77H8.084a3 3 0 0 1-2.991-2.77L4.087 6.66l-.209.035a.75.75 0 0 1-.256-1.478A48.567 48.567 0 0 1 7.5 4.705v-.227c0-1.564 1.213-2.9 2.816-2.951a52.662 52.662 0 0 1 3.369 0c1.603.051 2.815 1.387 2.815 2.951Zm-6.136-1.452a51.196 51.196 0 0 1 3.273 0C14.39 3.05 15 3.684 15 4.478v.113a49.488 49.488 0 0 0-6 0v-.113c0-.794.609-1.428 1.364-1.452Zm-.355 5.945a.75.75 0 1 0-1.5.058l.347 9a.75.75 0 1 0 1.499-.058l-.346-9Zm5.48.058a.75.75 0 1 0-1.498-.058l-.347 9a.75.75 0 0 0 1.5.058l.345-9Z"
+                                                            clip-rule="evenodd" />
+                                                    </svg>
 
-                                            <p style="font-size:13px;">လုပ်ငန်းမှထွက်မည်</p>
-                                        </div>
-                                    </button>
+                                                    <p style="font-size:13px;">လုပ်ငန်းမှထွက်မည်</p>
+                                                </div>
+                                            </button>
+                                        </template>
 
-                                    <div class="modal fade" id="leaveBusiness" tabindex="-1"
-                                        aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                        <div class="modal-dialog">
-                                            <div class="modal-content">
-                                                <div class="modal-header border-0">
-                                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Leave From This
-                                                        Business?</h1>
-                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                        aria-label="Close"></button>
-                                                </div>
-                                                <div class="modal-body">
-                                                    Are you sure to leave from this Business?
-                                                </div>
-                                                <div class="modal-footer border-0 flex justify-between">
-                                                    <button type="button" class="form-control" data-bs-dismiss="modal"
-                                                        :style="{ border: `1px solid ${themeColor}` }">Cancel</button>
-                                                    <button @click="leaveBusiness" type="button" data-bs-dismiss="modal"
-                                                        class="form-control text-white"
-                                                        :style="{ backgroundColor: $themeColor }">Confirm</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
 
+                                        <template v-slot:default="{ isActive }">
+                                            <v-card title="Leave from this business?">
+                                                <v-card-text>
+                                                    Are you sure you want to leave this business?
+                                                </v-card-text>
+
+                                                <v-card-actions>
+                                                    <v-spacer></v-spacer>
+                                                    <Button @click="isActive.value = false" classes="border text-black"
+                                                    text="Cancel" :status="1" />
+
+                                                    <Button @click="leaveBusiness"
+                                                        classes="mr-4 bg-red-300 text-red-800" text="Confirm"
+                                                        :status="1" />
+
+                                                </v-card-actions>
+                                            </v-card>
+                                        </template>
+                                    </v-dialog>
                                 </div>
-
                             </v-col>
                         </v-row>
 
@@ -150,7 +151,7 @@
                                         <tbody>
 
                                             <tr v-for="(businessOwner, index) in businessOwners">
-                                                <td>{{ index+1 }}</td>
+                                                <td>{{ index + 1 }}</td>
                                                 <td>{{ checkMe(businessOwner.business_owner_id, businessOwner.name) }}
                                                 </td>
                                                 <td>{{ businessOwner.role }}</td>
@@ -239,14 +240,12 @@
                                                                     </div>
 
                                                                     <div class=" mt-4">
-                                                                        <select v-model="tempForm.selectedRole" name=""
-                                                                            id="" class="form-control">
-                                                                            <option value="null" class="">Select
-                                                                                Role</option>
-                                                                            <option value="Admin">
+                                                                        <select @change="selected($event.target.value)"
+                                                                            name="" id="" class="form-control" :value="businessOwner?.role">
+
+                                                                            <option value="admin">
                                                                                 Admin</option>
-                                                                            <option value="Co-Admin"
-                                                                                >Co-Admin
+                                                                            <option value="co-admin">Co-Admin
                                                                             </option>
                                                                         </select>
                                                                     </div>
@@ -282,6 +281,7 @@
 <script setup>
 import Layout from '../Layouts/Layout.vue';
 import BackButton from '../Components/BackButton.vue';
+import Button from '../Components/Button.vue';
 import { useToast } from 'vue-toastification';
 import { ref, inject, onMounted } from 'vue'
 import { router, useForm } from '@inertiajs/vue3';
@@ -294,10 +294,7 @@ const props = defineProps({
 })
 
 const authUser = ref(JSON.parse(localStorage.getItem('authUser')));
-const tempForm = useForm({
-    selectedRole: null
-})
-
+const selectedRole = ref();
 onMounted(() => {
 
     let token = localStorage.getItem('token')
@@ -314,7 +311,7 @@ onMounted(() => {
     })
         .then((response) => {
             businessOwners.value = response.data.data;
-            console.log(businessOwners.value);
+        
             loading.value = false;
         })
         .catch((error) => {
@@ -431,6 +428,11 @@ const kickBusinessOwner = (index, id) => {
         })
 }
 
+const selected = (role) => {
+    selectedRole.value = role;
+}
+
+
 const changeOwnership = (id, index) => {
 
     let token = localStorage.getItem('token')
@@ -442,7 +444,7 @@ const changeOwnership = (id, index) => {
     axios.post(`${baseUrl}/shops/business_ownerships/changeRole`,
         {
             id: id,
-            role: tempForm.selectedRole
+            role: selectedRole.value
         }, {
         headers: {
             Authorization: `Bearer ${token}`
@@ -452,6 +454,7 @@ const changeOwnership = (id, index) => {
             businessOwners.value.splice(index, 1);
             businessOwners.value.push(response.data.data);
             loading.value = false;
+            toast.success('Role Changed Successfully');
         })
         .catch((error) => {
             loading.value = false;
@@ -468,8 +471,8 @@ const leaveBusiness = () => {
     }
 
     loading.value = true;
-    axios.delete(`${baseUrl}/shops/business_ownerships/leave`,{
-        data: {shop_id : props.shop_id},
+    axios.delete(`${baseUrl}/shops/business_ownerships/leave`, {
+        data: { shop_id: props.shop_id },
         headers: {
             Authorization: `Bearer ${token}`
         }

@@ -1,5 +1,5 @@
 <template>
-    <div :style="{ backgroundColor: $themeColor }" class="shadow-sm" style="position:sticky;top:0px;z-index:2">
+    <div :style="{ backgroundColor: $themeColor }" class="shadow-sm" style="position:sticky;top:0px;z-index:50">
         <div class="container p-3 flex items-center justify-between text-white">
             <Link :href="route('dashboard')">
             <brand class="h5 col-6">

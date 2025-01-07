@@ -13,14 +13,16 @@
                     <v-row class="">
                         <v-col cols="5" class="">
                             <div class="d-flex p-4 items-center">
-                                <span
+                                <div
                                     class="bg-danger text-white w-10 h-10 flex justify-center items-center rounded-full"
-                                    style="font-size:20px;">၁</span>
+                                    style="font-size:20px;">
+                                    <span>၁</span>
+                                </div>
                                 <p class="text-danger ms-3 fs-5">လုပ်ငန်းအချက်အလက်</p>
                             </div>
 
                             <div class="flex items-center justify-center relative mx-14 rounded-md"
-                                style="border:1px solid black;background-color:lightgray;width:200px;height:200px;">
+                                style="border:1px solid red;background-color:lightgray;width:200px;height:200px;">
                                 <input type="file" id="fileUpload" class="absolute inset-0 opacity-0 cursor-pointer"
                                     @change="handleLogoFileChange" @input="form.logo = $event.target.files[0]" />
 
@@ -58,7 +60,7 @@
                                 <v-col cols="12">
                                     <div class="flex justify-center">
                                         <span class="w-36">လုပ်ငန်းနာမည်</span>
-                                        <v-textarea label="" v-model="form.name" row-height="15" rows="1"
+                                        <v-textarea v-model="form.name" row-height="15" rows="1" :style="{color:$themeColor}"
                                             variant="outlined"></v-textarea>
                                     </div>
 
@@ -68,7 +70,7 @@
                                 <v-col cols="12">
                                     <div class="flex justify-center">
                                         <span class="w-36">ဖုန်းနံပါတ်</span>
-                                        <v-textarea label="" v-model="form.phone" row-height="15" rows="1"
+                                        <v-textarea label="" v-model="form.phone" row-height="15" rows="1" :style="{color:$themeColor}"
                                             variant="outlined"></v-textarea>
                                     </div>
                                     <ErrorMessage class="mx-36" :text="formError?.phone?.[0]" />
@@ -78,7 +80,7 @@
                                 <v-col cols="12">
                                     <div class="flex justify-center">
                                         <span class="w-36">နေရပ်လိပ်စာ</span>
-                                        <v-textarea label="" v-model="form.address" row-height="5" rows="3"
+                                        <v-textarea label="" v-model="form.address" row-height="5" rows="3" :style="{color:$themeColor}"
                                             variant="outlined"></v-textarea>
                                     </div>
                                     <ErrorMessage class="mx-36" :text="formError?.address?.[0]" />
@@ -91,13 +93,13 @@
                             <v-row class="shop-opening-time">
                                 <v-col cols="12">
                                     <div>
-                                        <v-row>
+                                        <v-row class="flex justify-between">
                                             <!-- Picker in Menu -->
-                                            <v-col cols="12" sm="5" class=" position-relative">
+                                            <v-col cols="12" sm="5" class="position-relative">
                                                 <h3 class="mb-5">ဆိုင်ဖွင့်ချိန်</h3>
 
                                                 <div class="w-75" style="position:relative;">
-                                                    <v-text-field class="" v-model="form.opening_hour" :active="menu"
+                                                    <v-text-field class="" v-model="form.opening_hour" :active="menu" :style="{color:$themeColor}"
                                                         :focus="menu" label="Select Time"
                                                         prepend-icon="mdi-clock-time-four-outline" readonly>
                                                         <v-menu v-model="menu" :close-on-content-click="false"
@@ -108,7 +110,7 @@
                                                     </v-text-field>
 
                                                     <div class="bg-dark">
-                                                        <div style="position: absolute; top:-10px;right:-60px;;">
+                                                        <div style="position: absolute; top:-10px;right:-60px;">
                                                             <div class="my-1 fw-bold px-3"
                                                                 @click="opening_time_format = 'AM'"
                                                                 :class="opening_time_format == 'AM' ? 'bg-gray-300' : ''"
@@ -127,11 +129,11 @@
                                             </v-col>
 
                                             <!-- Picker in Dialog -->
-                                            <v-col cols="12" sm="5">
+                                            <v-col cols="12" sm="5" class="">
                                                 <h3 class="mb-5">ဆိုင်ပိတ်ချိန်</h3>
 
                                                 <div class="w-75" style="position:relative;">
-                                                    <v-text-field class="" v-model="form.closing_hour" :active="menu2"
+                                                    <v-text-field class="" v-model="form.closing_hour" :active="menu2" :style="{color:$themeColor}"
                                                         :focus="menu2" label="Select Time"
                                                         prepend-icon="mdi-clock-time-four-outline" readonly>
                                                         <v-menu v-model="menu2" :close-on-content-click="false"
@@ -185,7 +187,7 @@
                                 <v-col cols="12" class="flex">
                                     <h3 class="my-5 w-50">လုပ်ငန်းအမျိုးအစား</h3>
                                     <div class="w-100">
-                                        <v-select v-model="form.categories" :items="categories"
+                                        <v-select v-model="form.categories" :items="categories" :style="{color:$themeColor}"
                                             label="လုပ်ငန်းအမျိုးအစားရွေးချယ်မည်" item-title="name" item-value="id"
                                             multiple persistent-hint></v-select>
                                     </div>
@@ -207,7 +209,7 @@
 
                         <v-row class="mx-14">
                             <v-col cols="6">
-                                <select v-model="form.state_id" @change="getCity($event)" id=""
+                                <select v-model="form.state_id" @change="getCity($event)" id="" :style="{color:$themeColor}"
                                     class="form-control py-3">
                                     <option value="null">Choose a State</option>
                                     <option v-for="state in states" :key="state" :value="state.id">{{ state.name }}
@@ -216,13 +218,13 @@
                             </v-col>
 
                             <v-col cols="6">
-                                <v-select v-model="form.city_id" :items="cities.data" item-title="name" item-value="id"
+                                <v-select v-model="form.city_id" :items="cities.data" item-title="name" item-value="id" :style="{color:$themeColor}"
                                     label="City"></v-select>
                             </v-col>
                         </v-row>
 
                         <v-row class="mx-16 my-5">
-                            <v-textarea label="Location" v-model="location" row-height="15" rows="1"
+                            <v-textarea label="Location" v-model="location" row-height="15" rows="1" :style="{color:$themeColor}"
                                 variant="outlined"></v-textarea>
                         </v-row>
                     </div>
@@ -636,6 +638,7 @@ const submit = () => {
 
     }).then(response => {
         console.log(response)
+        toast.success('Business created successfully');
         router.replace('/dashboard');
     })
 

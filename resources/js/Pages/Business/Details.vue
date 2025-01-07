@@ -22,8 +22,7 @@
                                 <div class="h4 fw-bold">
                                     {{ business?.name }}
                                 </div>
-                                <div class="flex items-center" style="margin-top:-10px">
-
+                                <div class="flex items-center" style="margin-top:-5px">
                                     <Stars :ratings="business?.ratings" />
                                 </div>
                                 <div class="text-muted" style="font-weight:500">
@@ -32,6 +31,8 @@
                                 <div class="text-muted" style="font-weight:500">
                                     {{ business?.address }}
                                 </div>
+
+
                             </div>
                             <div class="flex flex-wrap">
 

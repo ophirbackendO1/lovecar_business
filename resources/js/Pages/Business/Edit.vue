@@ -64,7 +64,7 @@
                                 <v-col cols="12">
                                     <div class="flex justify-center">
                                         <span class="w-36">လုပ်ငန်းနာမည်</span>
-                                        <v-textarea label="" v-model="form.name" row-height="15" rows="1"
+                                        <v-textarea v-model="form.name" row-height="15" rows="1" :style="{color:$themeColor}"
                                             variant="outlined"></v-textarea>
                                     </div>
                                 </v-col>
@@ -72,7 +72,7 @@
                                 <v-col cols="12">
                                     <div class="flex justify-center">
                                         <span class="w-36">ဖုန်းနံပါတ်</span>
-                                        <v-textarea label="" v-model="form.phone" row-height="15" rows="1"
+                                        <v-textarea v-model="form.phone" row-height="15" rows="1" :style="{color:$themeColor}"
                                             variant="outlined"></v-textarea>
                                     </div>
                                 </v-col>
@@ -80,7 +80,7 @@
                                 <v-col cols="12">
                                     <div class="flex justify-center">
                                         <span class="w-36">နေရပ်လိပ်စာ</span>
-                                        <v-textarea label="" v-model="form.address" row-height="15" rows="1"
+                                        <v-textarea label="" v-model="form.address" row-height="15" rows="1" :style="{color:$themeColor}"
                                             variant="outlined"></v-textarea>
                                     </div>
                                 </v-col>
@@ -88,7 +88,7 @@
 
                             </v-row>
 
-                            <v-row class="shop-opening-time">
+                            <v-row class="shop-opening-time flex justify-between">
                                 <v-col cols="12">
                                     <div>
                                         <v-row>
@@ -97,7 +97,7 @@
                                                 <h3 class="mb-5">ဆိုင်ဖွင့်ချိန်</h3>
 
                                                 <div class="w-75" style="position:relative;">
-                                                    <v-text-field class="" v-model="form.opening_hour" :active="menu"
+                                                    <v-text-field class="" v-model="form.opening_hour" :active="menu" :style="{color:$themeColor}"
                                                         :focus="menu" label="Select Time"
                                                         prepend-icon="mdi-clock-time-four-outline" readonly>
                                                         <v-menu v-model="menu" :close-on-content-click="false"
@@ -131,7 +131,7 @@
                                                 <h3 class="mb-5">ဆိုင်ပိတ်ချိန်</h3>
 
                                                 <div class="w-75" style="position:relative;">
-                                                    <v-text-field class="" v-model="form.closing_hour" :active="menu2"
+                                                    <v-text-field class="" v-model="form.closing_hour" :active="menu2" :style="{color:$themeColor}"
                                                         :focus="menu2" label="Select Time"
                                                         prepend-icon="mdi-clock-time-four-outline" readonly>
                                                         <v-menu v-model="menu2" :close-on-content-click="false"
@@ -185,7 +185,7 @@
                                 <v-col cols="12" class="flex">
                                     <h3 class="my-5 w-50">လုပ်ငန်းအမျိုးအစား</h3>
                                     <div class="w-100">
-                                        <v-select v-model="form.categories" :items="categories"
+                                        <v-select v-model="form.categories" :items="categories" :style="{color:$themeColor}"
                                             label="လုပ်ငန်းအမျိုးအစားရွေးချယ်မည်" item-title="name" item-value="id"
                                             multiple persistent-hint></v-select>
                                     </div>
@@ -209,7 +209,7 @@
                         <v-row class="mx-14">
                             <v-col cols="6">
 
-                                <select v-model="form.state_id" @change="getCity($event.target.value)" id=""
+                                <select v-model="form.state_id" @change="getCity($event.target.value)" id="" :style="{color:$themeColor}"
                                     class="form-control py-3">
                                     <option value="null">Choose a State</option>
                                     <option v-for="state in states" :key="state" :value="state.id">{{ state.name }}
@@ -219,13 +219,13 @@
 
 
                             <v-col cols="6">
-                                <v-select v-model="form.city_id" :items="cities.data" item-title="name" item-value="id"
+                                <v-select v-model="form.city_id" :items="cities.data" item-title="name" item-value="id" :style="{color:$themeColor}"
                                     label="City"></v-select>
                             </v-col>
                         </v-row>
 
                         <v-row class="mx-16 my-5">
-                            <v-textarea label="Location" v-model="location" row-height="15" rows="1"
+                            <v-textarea label="Location" v-model="location" row-height="15" rows="1" :style="{color:$themeColor}"
                                 variant="outlined"></v-textarea>
                         </v-row>
                     </div>
@@ -364,7 +364,7 @@
                                 <div class="square-image flex justify-center items-center relative"
                                     style="width:150px;height:150px;border:2px solid red;border-radius: 10px;overflow:hidden;">
                                     <input type="file" class="absolute inset-0 opacity-0 cursor-pointer"
-                                        @change="handleImageFileChange($event)" @input="form.image = $event.target.files[0]" />
+                                        @change="handleImageFileChange($event)"/>
 
 
                                     <label for="fileImageUpload"
@@ -646,6 +646,7 @@ const handleLogoFileChange = () => {
 const handleImageFileChange = (event) => {
     const fileImage = event.target.files[0];
     if (fileImage) {
+        form.image.push(fileImage);
         const previewUrl = URL.createObjectURL(fileImage);
         previewImages.value.push(previewUrl);
     }
@@ -701,7 +702,13 @@ const submit = () => {
         }
     }).then(response => {
         console.log(response.data.data);
+        toast.success('Business updated successfully');
         router.replace('/dashboard');
+    })
+
+    .catch(error => {
+        console.log(error);
+
     })
 }
 
