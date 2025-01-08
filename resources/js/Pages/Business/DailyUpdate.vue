@@ -1,21 +1,26 @@
 <template>
     <div>
         <Layout>
-            <BackButton class="mt-3" />
-            <h3 class="text-danger mt-2 mb-5 fs-5 font-bold">
-                Daily Updates Info
-            </h3>
+            <v-row class="flex justify-center mt-10">
+                <v-col cols="6">
+                    <BackButton class="mt-3" />
+                    <h3 class="text-danger mb-5 fs-5 font-bold text-center">
+                        Daily Updates Info
+                    </h3>
+                </v-col>
+            </v-row>
+
             <div class="flex justify-center items-center" style="height: 70vh;" v-if="loading">
                 <Carloader style="margin-bottom: 100px;" />
             </div>
             <div v-else class="container p-4">
-                <v-row class="mb-4">
-                    <v-col v-for="(service, index) in dailyUpdate?.services" :key="service.id" cols="6"
+                <v-row class="mb-4 flex justify-center">
+                    <v-col v-for="(service, index) in dailyUpdate?.services" :key="service.id" :cols="6"
                         class="border rounded-md p-4">
                         <h3 class="mb-10 fs-5">{{ service.name }}</h3>
 
                         <div class="service-items">
-                            <div v-for="(item, innerIndex) in service.items"
+                            <div v-for="(item, innerIndex) in service.items" :key="innerIndex"
                                 class="row flex justify-between p-2 rounded-lg border my-3" data-bs-toggle="modal"
                                 :data-bs-target="'#dailyUpdateModal' + index"
                                 style="background-color: pink; opacity: 0.9;"
@@ -101,7 +106,7 @@
                     <v-col cols="6" class="">
                         <h3 class="mb-5 mx-5">မှတ်ချက်ရေးရန်</h3>
 
-                        <div v-for="(note, index) in form.notes" class="">
+                        <div v-for="(note, index) in form.notes" class="" :key="index">
                             <div class="border p-3 rounded-lg my-3 flex justify-between">
 
                                 <input type="text" class="form-control" v-model="note.text">
@@ -127,7 +132,7 @@
                                         d="M12 3.75a.75.75 0 0 1 .75.75v6.75h6.75a.75.75 0 0 1 0 1.5h-6.75v6.75a.75.75 0 0 1-1.5 0v-6.75H4.5a.75.75 0 0 1 0-1.5h6.75V4.5a.75.75 0 0 1 .75-.75Z"
                                         clip-rule="evenodd" />
                                 </svg>
-                                အသစ်ထည့်ရန်
+                                အသစ်ထည့်ရန်အတွက် နှိပ်ပါ
                             </button>
                         </div>
                     </v-col>
@@ -300,18 +305,15 @@ const updateDaily = () => {
 
 /* When the checkbox is checked, add a blue background */
 .container .input:checked~.checkmark {
-    box-shadow: 3px 3px 0px rgb(183, 183, 183);
-    transition: all 0.2s;
     opacity: 1;
     background-image: linear-gradient(45deg,
-            rgb(100, 61, 219) 0%,
-            rgb(217, 21, 239) 100%);
+            red 0%,
+            red 100%);
 }
 
 .container .input~.checkmark {
     transition: all 0.2s;
     opacity: 1;
-    box-shadow: 1px 1px 0px rgb(183, 183, 183);
 }
 
 /* Create the checkmark/indicator (hidden when not checked) */

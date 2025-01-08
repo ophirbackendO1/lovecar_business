@@ -150,7 +150,7 @@
 
                                         <tbody>
 
-                                            <tr v-for="(businessOwner, index) in businessOwners">
+                                            <tr v-for="(businessOwner, index) in businessOwners" :key="index">
                                                 <td>{{ index + 1 }}</td>
                                                 <td>{{ checkMe(businessOwner.business_owner_id, businessOwner.name) }}
                                                 </td>
