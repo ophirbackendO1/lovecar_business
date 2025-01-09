@@ -101,11 +101,13 @@
 import {ref,inject} from 'vue';
 import { route } from 'ziggy-js';
 import { router, usePage } from '@inertiajs/vue3';
+import { useToast } from 'vue-toastification';
 import Button from '../Components/Button.vue';
 const page = usePage();
 const shopId = page.props.shop_id;
 const baseUrl = inject('baseUrl')
 const loading = ref(false)
+const toast = useToast();
 const deleteShop = (shop_id) => {
     let token = localStorage.getItem('token');
     if (!token) {
@@ -121,6 +123,7 @@ const deleteShop = (shop_id) => {
     })
         .then((response) => {
             console.log(response);
+            toast.success('Business deleted successfully');
             router.replace('/dashboard');
             loading.value = false;
 
