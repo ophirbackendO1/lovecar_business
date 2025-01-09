@@ -16,7 +16,7 @@
             <div v-else class="container p-4">
                 <v-row class="mb-4 flex justify-center">
                     <v-col v-for="(service, index) in dailyUpdate?.services" :key="service.id" :cols="6"
-                        class="border rounded-md p-4">
+                        class="rounded-md p-4 border">
                         <h3 class="mb-10 fs-5">{{ service.name }}</h3>
 
                         <div class="service-items">
@@ -29,7 +29,7 @@
                                     <h3 class="">{{ item.name }}</h3>
                                 </div>
                                 <div class="col-md-4 text-center">
-                                    <p>{{ item.price }}</p>
+                                    <p v-if="item.price > 0">{{ item.price }}</p>
                                 </div>
                                 <div class="col-md-2">
                                     <label class="container">
@@ -124,7 +124,7 @@
                         </div>
 
 
-                        <div @click="addNote" class="flex justify-center border-1 border-danger py-2 rounded-lg">
+                        <div v-if="form.notes.length == 0" @click="addNote" class="flex justify-center border-1 border-danger py-2 rounded-lg">
                             <button class="flex">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
                                     class="size-6">
@@ -132,7 +132,19 @@
                                         d="M12 3.75a.75.75 0 0 1 .75.75v6.75h6.75a.75.75 0 0 1 0 1.5h-6.75v6.75a.75.75 0 0 1-1.5 0v-6.75H4.5a.75.75 0 0 1 0-1.5h6.75V4.5a.75.75 0 0 1 .75-.75Z"
                                         clip-rule="evenodd" />
                                 </svg>
-                                အသစ်ထည့်ရန်အတွက် နှိပ်ပါ
+                                နှိပ်ပါ
+                            </button>
+                        </div>
+
+                        <div v-if="form.notes.length > 0" @click="addNote" class="flex justify-center border-1 border-danger py-2 rounded-lg">
+                            <button class="flex">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
+                                    class="size-6">
+                                    <path fill-rule="evenodd"
+                                        d="M12 3.75a.75.75 0 0 1 .75.75v6.75h6.75a.75.75 0 0 1 0 1.5h-6.75v6.75a.75.75 0 0 1-1.5 0v-6.75H4.5a.75.75 0 0 1 0-1.5h6.75V4.5a.75.75 0 0 1 .75-.75Z"
+                                        clip-rule="evenodd" />
+                                </svg>
+                                အသစ်ထည့်ရန်
                             </button>
                         </div>
                     </v-col>

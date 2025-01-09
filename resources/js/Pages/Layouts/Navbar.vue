@@ -1,5 +1,5 @@
 <template>
-    <div v-if="shopId" class="button-container rounded-md px-2"
+    <div v-if="shopId" class="button-container rounded-md px-2 z-10"
         style="position:fixed;top:100px;left:50%;transform: translate(-50%);" :style="{backgroundColor:$themeColor}">
 
         <Link :href="route('dashboard')" class="no-underline hover:none">

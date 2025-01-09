@@ -64,24 +64,24 @@
                                 <v-col cols="12">
                                     <div class="flex justify-center">
                                         <span class="w-36">လုပ်ငန်းနာမည်</span>
-                                        <v-textarea v-model="form.name" row-height="15" rows="1" :style="{color:$themeColor}"
-                                            variant="outlined"></v-textarea>
+                                        <v-textarea v-model="form.name" row-height="15" rows="1"
+                                            :style="{ color: $themeColor }" variant="outlined"></v-textarea>
                                     </div>
                                 </v-col>
 
                                 <v-col cols="12">
                                     <div class="flex justify-center">
                                         <span class="w-36">ဖုန်းနံပါတ်</span>
-                                        <v-textarea v-model="form.phone" row-height="15" rows="1" :style="{color:$themeColor}"
-                                            variant="outlined"></v-textarea>
+                                        <v-textarea v-model="form.phone" row-height="15" rows="1"
+                                            :style="{ color: $themeColor }" variant="outlined"></v-textarea>
                                     </div>
                                 </v-col>
 
                                 <v-col cols="12">
                                     <div class="flex justify-center">
                                         <span class="w-36">နေရပ်လိပ်စာ</span>
-                                        <v-textarea label="" v-model="form.address" row-height="15" rows="1" :style="{color:$themeColor}"
-                                            variant="outlined"></v-textarea>
+                                        <v-textarea label="" v-model="form.address" row-height="15" rows="1"
+                                            :style="{ color: $themeColor }" variant="outlined"></v-textarea>
                                     </div>
                                 </v-col>
 
@@ -97,9 +97,10 @@
                                                 <h3 class="mb-5">ဆိုင်ဖွင့်ချိန်</h3>
 
                                                 <div class="w-75" style="position:relative;">
-                                                    <v-text-field class="" v-model="form.opening_hour" :active="menu" :style="{color:$themeColor}"
-                                                        :focus="menu" label="Select Time"
-                                                        prepend-icon="mdi-clock-time-four-outline" readonly>
+                                                    <v-text-field class="" v-model="form.opening_hour" :active="menu"
+                                                        :style="{ color: $themeColor }" :focus="menu"
+                                                        label="Select Time" prepend-icon="mdi-clock-time-four-outline"
+                                                        readonly>
                                                         <v-menu v-model="menu" :close-on-content-click="false"
                                                             activator="parent" transition="scale-transition">
                                                             <v-time-picker v-if="menu" v-model="form.opening_hour"
@@ -131,9 +132,10 @@
                                                 <h3 class="mb-5">ဆိုင်ပိတ်ချိန်</h3>
 
                                                 <div class="w-75" style="position:relative;">
-                                                    <v-text-field class="" v-model="form.closing_hour" :active="menu2" :style="{color:$themeColor}"
-                                                        :focus="menu2" label="Select Time"
-                                                        prepend-icon="mdi-clock-time-four-outline" readonly>
+                                                    <v-text-field class="" v-model="form.closing_hour" :active="menu2"
+                                                        :style="{ color: $themeColor }" :focus="menu2"
+                                                        label="Select Time" prepend-icon="mdi-clock-time-four-outline"
+                                                        readonly>
                                                         <v-menu v-model="menu2" :close-on-content-click="false"
                                                             activator="parent" transition="scale-transition">
                                                             <v-time-picker v-if="menu2" v-model="form.closing_hour"
@@ -185,9 +187,9 @@
                                 <v-col cols="12" class="flex">
                                     <h3 class="my-5 w-50">လုပ်ငန်းအမျိုးအစား</h3>
                                     <div class="w-100">
-                                        <v-select v-model="form.categories" :items="categories" :style="{color:$themeColor}"
-                                            label="လုပ်ငန်းအမျိုးအစားရွေးချယ်မည်" item-title="name" item-value="id"
-                                            multiple persistent-hint></v-select>
+                                        <v-select v-model="form.categories" :items="categories"
+                                            :style="{ color: $themeColor }" label="လုပ်ငန်းအမျိုးအစားရွေးချယ်မည်"
+                                            item-title="name" item-value="id" multiple persistent-hint></v-select>
                                     </div>
                                 </v-col>
                             </v-row>
@@ -209,8 +211,8 @@
                         <v-row class="mx-14">
                             <v-col cols="6">
 
-                                <select v-model="form.state_id" @change="getCity($event.target.value)" id="" :style="{color:$themeColor}"
-                                    class="form-control py-3">
+                                <select v-model="form.state_id" @change="getCity($event.target.value)" id=""
+                                    :style="{ color: $themeColor }" class="form-control py-3">
                                     <option value="null">Choose a State</option>
                                     <option v-for="state in states" :key="state" :value="state.id">{{ state.name }}
                                     </option>
@@ -219,14 +221,14 @@
 
 
                             <v-col cols="6">
-                                <v-select v-model="form.city_id" :items="cities.data" item-title="name" item-value="id" :style="{color:$themeColor}"
-                                    label="City"></v-select>
+                                <v-select v-model="form.city_id" :items="cities.data" item-title="name" item-value="id"
+                                    :style="{ color: $themeColor }" label="City"></v-select>
                             </v-col>
                         </v-row>
 
                         <v-row class="mx-16 my-5">
-                            <v-textarea label="Location" v-model="location" row-height="15" rows="1" :style="{color:$themeColor}"
-                                variant="outlined"></v-textarea>
+                            <v-textarea label="Location" v-model="location" row-height="15" rows="1"
+                                :style="{ color: $themeColor }" variant="outlined"></v-textarea>
                         </v-row>
                     </div>
 
@@ -273,9 +275,10 @@
                                             <p>ကုန်ပစ္စည်းများနှင့် ဝန်ဆောင်မှုများ</p>
                                         </v-col>
 
-                                        <v-col>
 
-                                            <v-select v-model="box.items" :items="service_items[index]"
+                                        <v-col>
+                                            <v-select @update:model-value="addPrice(box.service_id, index)"
+                                                v-model="box.items" :items="service_items[index]"
                                                 label="ကုန်ပစ္စည်းများနှင့် ဝန်ဆောင်မှုများ‌ရွေးချယ်မည်"
                                                 item-title="name" return-object multiple persistent-hint></v-select>
                                         </v-col>
@@ -364,7 +367,7 @@
                                 <div class="square-image flex justify-center items-center relative"
                                     style="width:150px;height:150px;border:2px solid red;border-radius: 10px;overflow:hidden;">
                                     <input type="file" class="absolute inset-0 opacity-0 cursor-pointer"
-                                        @change="handleImageFileChange($event)"/>
+                                        @change="handleImageFileChange($event)" />
 
 
                                     <label for="fileImageUpload"
@@ -409,13 +412,14 @@ import { VTimePicker } from 'vuetify/labs/VTimePicker'
 import { router, useForm } from '@inertiajs/vue3';
 import { onMounted, ref, inject, watch } from 'vue';
 import { split } from "postcss/lib/list";
+import { useToast } from 'vue-toastification';
 
 const props = defineProps({
     shop_id: Number
 })
 
 const business = ref()
-
+const toast = useToast();
 const loading = ref(false)
 const baseUrl = inject('baseUrl');
 const days = ref(['S', 'M', 'T', 'W', 'T', 'F', 'S'])
@@ -431,6 +435,8 @@ const item_prices = ref([]);
 const menu = ref(false);
 const menu2 = ref(false);
 const logoPreview = ref();
+const filteredServices = ref()
+
 const toggleDay = (dayIndex) => {
     if (selectedDays.value.includes(dayIndex)) {
         selectedDays.value = selectedDays.value.filter(d => d !== dayIndex);
@@ -585,13 +591,25 @@ const getCity = async (state_id) => {
 const getServiceItem = async (serviceId, index) => {
 
     if (serviceId) {
+
+        const duplicate = serviceBoxes.value.find((service, index, array) =>
+            array.findIndex(item => item.service_id === service.service_id) !== index
+        );
+
+        if (duplicate) {
+            toast.warning('အမျိုးအစားတူနေသောကြောင့် ထပ်မံရွေးချယ်ပါ');
+            serviceBoxes.value[index].service_id = null;
+            return;
+        }
+
+
         let data = await axios.get(
             `${baseUrl}/shops/service_items/only_service_items?service_id=` + serviceId
         );
 
+
         service_items.value[index] = data.data;
     }
-
 
 }
 
@@ -630,7 +648,13 @@ const addServiceBox = () => {
     item_prices.value.push({})
 }
 
+const addPrice = (serviceId, index) => {
+    let serviceItemIndex = serviceBoxes.value[index].items.length;
+    item_prices.value[index][serviceItemIndex] = 0;
+}
+
 const removeServiceItemBox = (index) => {
+    item_prices.value.splice(index, 1);
     serviceBoxes.value.splice(index, 1);
 };
 
@@ -706,10 +730,10 @@ const submit = () => {
         router.replace('/dashboard');
     })
 
-    .catch(error => {
-        console.log(error);
+        .catch(error => {
+            console.log(error);
 
-    })
+        })
 }
 
 

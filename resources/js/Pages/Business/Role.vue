@@ -36,10 +36,10 @@
                                                 </div>
                                                 <div class="row modal-body">
                                                     <div class="col-md-5">
-                                                        <h3>Business Account</h3>
+                                                        <h3>Business User Code</h3>
                                                     </div>
 
-                                                    <div class="col-md-7 flex justify-between">
+                                                    <div class="col-md-7 flex">
                                                         <div class="relative">
                                                             <input v-model="user_code" type="text"
                                                                 class="py-2 px-2 rounded-md border-0 outline-none text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-red-600 sm:text-sm sm:leading-6"
@@ -60,15 +60,15 @@
 
 
                                                         <button @click="getBusinessOwnerAcc"
-                                                            class="btn btn-sm text-white"
+                                                            class="btn btn-sm text-white ms-3 w-100"
                                                             :style="{ backgroundColor: $themeColor }">Add</button>
                                                     </div>
 
-                                                    <div class="col-md-6 mt-4">
+                                                    <div class="col-md-5 mt-4">
                                                         <h3>Role</h3>
                                                     </div>
 
-                                                    <div class="col-md-6 mt-4">
+                                                    <div class="col-md-7 mt-4">
                                                         <select @change="handleRoleChange($event)" name="" id=""
                                                             class="form-control">
 
@@ -154,7 +154,7 @@
                                                 <td>{{ index + 1 }}</td>
                                                 <td>{{ checkMe(businessOwner.business_owner_id, businessOwner.name) }}
                                                 </td>
-                                                <td>{{ businessOwner.role }}</td>
+                                                <td>{{ businessOwner.role.charAt(0).toUpperCase() + businessOwner.role.slice(1) }}</td>
                                                 <td class="flex">
                                                     <button v-if="authUser.id != businessOwner.business_owner_id"
                                                         type="button" class="me-3" data-bs-toggle="modal"
@@ -222,7 +222,7 @@
                                                                 </div>
                                                                 <div class="modal-body">
                                                                     <div
-                                                                        class="border flex justify-center items-center py-3 rounded-lg">
+                                                                        class="border flex items-center py-3 rounded-lg">
                                                                         <div class="me-3 ms-2">
                                                                             <svg xmlns="http://www.w3.org/2000/svg"
                                                                                 viewBox="0 0 24 24" fill="currentColor"
@@ -251,7 +251,6 @@
                                                                     </div>
                                                                 </div>
                                                                 <div class="modal-footer border-0">
-
                                                                     <button
                                                                         @click="changeOwnership(businessOwner.id, index)"
                                                                         type="button" class="btn text-white w-full"
@@ -311,7 +310,7 @@ onMounted(() => {
     })
         .then((response) => {
             businessOwners.value = response.data.data;
-        
+
             loading.value = false;
         })
         .catch((error) => {
