@@ -1,6 +1,6 @@
 <template>
     <div v-if="shopId" class="button-container rounded-md px-2 z-10"
-        style="position:fixed;top:100px;left:50%;transform: translate(-50%);" :style="{backgroundColor:$themeColor}">
+        style="position:fixed;top:100px;left:50%;transform: translate(-50%);width:1000px;" :style="{backgroundColor:$themeColor}">
 
         <Link :href="route('dashboard')" class="no-underline hover:none">
         <button class="btn flex text-white hover:bg-indigo-500">

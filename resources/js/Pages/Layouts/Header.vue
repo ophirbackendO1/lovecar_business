@@ -11,8 +11,16 @@
 
             <div class="flex justify-center items-center">
                 <img src="../images/profile.png" style="width:60px;" alt="">
-            <p>{{ businessOwner?.name }} <span v-if="businessOwner?.role"> - ({{ businessOwner?.role?.charAt(0).toUpperCase() + businessOwner?.role?.slice(1) }}
-                    )</span> </p>
+                <div class="dropdown">
+                    <a class=" dropdown-toggle" href="#" role="button"
+                        data-bs-toggle="dropdown">{{ businessOwner?.name }} <span v-if="businessOwner?.role"> - ({{
+                            businessOwner?.role?.charAt(0).toUpperCase() + businessOwner?.role?.slice(1) }}
+                        )</span> </a>
+
+                    <ul class="dropdown-menu">
+                        <li @click="logout"><a class="dropdown-item" href="#">Logout</a></li>
+                    </ul>
+                </div>
             </div>
         </div>
     </div>
@@ -21,7 +29,7 @@
 <script setup>
 import axios from 'axios';
 import { ref, onMounted, inject } from 'vue';
-import { usePage } from '@inertiajs/vue3';
+import { router, usePage } from '@inertiajs/vue3';
 import { route } from 'ziggy-js';
 
 const user = JSON.parse(localStorage.getItem('user'));
@@ -32,6 +40,11 @@ const baseUrl = inject('baseUrl');
 const loading = ref(false);
 
 const businessOwner = ref()
+
+const logout = () => {
+    localStorage.removeItem('token');
+    router.visit('/login')
+}
 onMounted(() => {
     let token = localStorage.getItem('token');
     if (!token) {
