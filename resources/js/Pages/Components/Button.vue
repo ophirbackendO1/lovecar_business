@@ -1,5 +1,5 @@
 <template>
-    <button :style="{ backgroundColor: $themeColor }" class="btn text-white">
+    <button :style="{ backgroundColor: $themeColor }" class="btn text-white" :class="classes">
         <span class="">
             {{ text }}
         </span>
@@ -10,7 +10,8 @@
 <script setup>
 const props = defineProps({
     text: String,
-    status: Number
+    status: Number,
+    classes : String
 })
 </script>
 

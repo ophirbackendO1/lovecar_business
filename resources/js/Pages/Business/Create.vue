@@ -275,7 +275,7 @@
 
                                         <v-col>
 
-                                            <v-select v-model="box.items" :items="service_items[index]"
+                                            <v-select @update:model-value="addPrice(index)" v-model="box.items" :items="service_items[index]"
                                                 label="ကုန်ပစ္စည်းများနှင့် ဝန်ဆောင်မှုများ‌ရွေးချယ်မည်"
                                                 item-title="name" return-object multiple persistent-hint></v-select>
                                         </v-col>
@@ -554,6 +554,12 @@ const addServiceBox = () => {
     })
     item_prices.value.push({})
 }
+
+const addPrice = (index) => {
+    let serviceItemIndex = serviceBoxes.value[index].items.length;
+    item_prices.value[index][serviceItemIndex] = 0;
+}
+
 
 const removeServiceItemBox = (index) => {
     serviceBoxes.value.splice(index, 1);

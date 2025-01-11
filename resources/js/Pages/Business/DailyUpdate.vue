@@ -16,7 +16,7 @@
             <div v-else class="container p-4">
                 <v-row class="mb-4 flex justify-center">
                     <v-col v-for="(service, index) in dailyUpdate?.services" :key="service.id" :cols="6"
-                        class="rounded-md p-4 border">
+                        class="rounded-md p-4">
                         <h3 class="mb-10 fs-5">{{ service.name }}</h3>
 
                         <div class="service-items">

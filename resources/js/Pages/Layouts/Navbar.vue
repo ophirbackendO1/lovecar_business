@@ -26,7 +26,7 @@
             <h3 class="ms-2">UpdateDailyInfo</h3>
         </button>
         </Link>
-        <Link :href="route('business.permission', { shop_id: shopId })"><button class="btn flex text-white hover:bg-indigo-500">
+        <Link v-if="authUser.role == 'admin'" :href="route('business.permission', { shop_id: shopId })"><button class="btn flex text-white hover:bg-indigo-500">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
                 <path fill-rule="evenodd"
                     d="M15.75 1.5a6.75 6.75 0 0 0-6.651 7.906c.067.39-.032.717-.221.906l-6.5 6.499a3 3 0 0 0-.878 2.121v2.818c0 .414.336.75.75.75H6a.75.75 0 0 0 .75-.75v-1.5h1.5A.75.75 0 0 0 9 19.5V18h1.5a.75.75 0 0 0 .53-.22l2.658-2.658c.19-.189.517-.288.906-.22A6.75 6.75 0 1 0 15.75 1.5Zm0 3a.75.75 0 0 0 0 1.5A2.25 2.25 0 0 1 18 8.25a.75.75 0 0 0 1.5 0 3.75 3.75 0 0 0-3.75-3.75Z"
@@ -62,7 +62,7 @@
         </button>
         </Link>
 
-        <v-dialog max-width="500">
+        <v-dialog v-if="authUser.role == 'admin'" max-width="500">
             <template v-slot:activator="{ props: activatorProps }">
                 <button v-bind="activatorProps" class="btn flex text-white hover:bg-indigo-500">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
@@ -98,7 +98,7 @@
 </template>
 
 <script setup>
-import {ref,inject} from 'vue';
+import {ref,inject,onMounted,provide} from 'vue';
 import { route } from 'ziggy-js';
 import { router, usePage } from '@inertiajs/vue3';
 import { useToast } from 'vue-toastification';
@@ -108,6 +108,38 @@ const shopId = page.props.shop_id;
 const baseUrl = inject('baseUrl')
 const loading = ref(false)
 const toast = useToast();
+const permission = ref()
+const authUser = localStorage.getItem('authUser');
+
+onMounted(() => {
+    let token = localStorage.getItem("token");
+
+    if (!token) {
+        router.get("/login");
+    }
+
+    loading.value = true;
+    axios
+        .get(
+            `${baseUrl}/shops/business_ownerships/getPermission?shop_id=${shopId}`,
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            }
+        )
+        .then((response) => {
+            console.log(response.data.data);
+            permission.value = response.data.data;
+      
+            loading.value = false;
+        })
+        .catch((error) => {
+            console.log(error);
+            loading.value = false;
+        });
+});
+
 const deleteShop = (shop_id) => {
     let token = localStorage.getItem('token');
     if (!token) {

@@ -12,7 +12,8 @@
                         <v-row class="flex justify-end">
                             <v-col cols="3">
                                 <div class="flex">
-                                    <button type="button" data-bs-toggle="modal" data-bs-target="#addRoleModal"
+                                    {{ permission }}
+                                    <button v-if="authUser.role == 'admin' || (authUser.role == 'co-admin' && permission?.assign_role)" type="button" data-bs-toggle="modal" data-bs-target="#addRoleModal"
                                         class="form-control"
                                         style="border:1px solid red;color:red;box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;">
                                         <div class="flex justify-between">
@@ -71,7 +72,7 @@
                                                     <div class="col-md-7 mt-4">
                                                         <select @change="handleRoleChange($event)" name="" id=""
                                                             class="form-control">
-
+                                                            <option value="null">Select Role</option>
                                                             <option value="Admin" class="text-center">Admin</option>
                                                             <option value="Co-Admin" class="text-center">Co-Admin
                                                             </option>
@@ -95,9 +96,9 @@
                                 <div class="flex">
                                     <v-dialog max-width="500">
                                         <template v-slot:activator="{ props: activatorProps }">
-                                            <button v-bind="activatorProps" type="button" class="form-control"
-                                                data-bs-toggle="modal" data-bs-target="#leaveBusiness"
-                                                style="background-color:red;color:white;box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;">
+                                            <button @click="leaveBusiness"
+                                                 v-bind="fadeButton ? {} : activatorProps" type="button" class="form-control"  :class="{ 'fade-button': fadeButton }"
+                                                style="color:white;box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;" :style="fadeButton ? 'background-color: rgba(255,0,0,0.5);' : 'background-color: red;'">
                                                 <div class="flex justify-between">
                                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
                                                         fill="currentColor" class="size-6">
@@ -120,11 +121,11 @@
 
                                                 <v-card-actions>
                                                     <v-spacer></v-spacer>
-                                                    <Button @click="isActive.value = false" classes="border text-black"
-                                                    text="Cancel" :status="1" />
+                                                    <Button @click="isActive.value = false" :classes="'bg-black text-white'"
+                                                        text="Cancel" :status="1" />
 
-                                                    <Button @click="leaveBusiness"
-                                                        classes="mr-4 bg-red-300 text-red-800" text="Confirm"
+                                                    <Button @click="() => { leaveBusiness(); isActive.value = false; }"
+                                                         text="Confirm"
                                                         :status="1" />
 
                                                 </v-card-actions>
@@ -154,8 +155,9 @@
                                                 <td>{{ index + 1 }}</td>
                                                 <td>{{ checkMe(businessOwner.business_owner_id, businessOwner.name) }}
                                                 </td>
-                                                <td>{{ businessOwner.role.charAt(0).toUpperCase() + businessOwner.role.slice(1) }}</td>
-                                                <td class="flex">
+                                                <td>{{ businessOwner.role.charAt(0).toUpperCase() +
+                                                    businessOwner.role.slice(1) }}</td>
+                                                <td v-if="authUser.role == 'admin'" class="flex">
                                                     <button v-if="authUser.id != businessOwner.business_owner_id"
                                                         type="button" class="me-3" data-bs-toggle="modal"
                                                         :data-bs-target="'#kickModal' + index">
@@ -167,7 +169,7 @@
                                                     </button>
 
                                                     <!-- Kick Modal -->
-                                                    <div class="modal fade" :id="'kickModal' + index" tabindex="-1"
+                                                    <div v-if="businessOwner.role == 'admin'" class="modal fade" :id="'kickModal' + index" tabindex="-1"
                                                         aria-labelledby="exampleModalLabel" aria-hidden="true">
                                                         <div class="modal-dialog">
                                                             <div class="modal-content">
@@ -195,6 +197,7 @@
                                                             </div>
                                                         </div>
                                                     </div>
+
 
                                                     <button type="button" class="me-3" data-bs-toggle="modal"
                                                         :data-bs-target="'#editRoleModal' + index">
@@ -241,7 +244,8 @@
 
                                                                     <div class=" mt-4">
                                                                         <select @change="selected($event.target.value)"
-                                                                            name="" id="" class="form-control" :value="businessOwner?.role">
+                                                                            name="" id="" class="form-control"
+                                                                            :value="businessOwner?.role">
 
                                                                             <option value="admin">
                                                                                 Admin</option>
@@ -284,18 +288,22 @@ import Button from '../Components/Button.vue';
 import { useToast } from 'vue-toastification';
 import { ref, inject, onMounted } from 'vue'
 import { router, useForm } from '@inertiajs/vue3';
+
 const loading = ref(false)
 const baseUrl = inject('baseUrl');
 const businessOwners = ref([]);
 const toast = useToast();
+const fadeButton = ref(false);
 const props = defineProps({
     shop_id: Number
 })
 
 const authUser = ref(JSON.parse(localStorage.getItem('authUser')));
 const selectedRole = ref();
-onMounted(() => {
 
+onMounted(() => {
+    const permission = inject('permission');
+    console.log('Now', permission);
     let token = localStorage.getItem('token')
 
     if (!token) {
@@ -310,7 +318,17 @@ onMounted(() => {
     })
         .then((response) => {
             businessOwners.value = response.data.data;
+            console.log(businessOwners.value);
+            let adminCount = 0;
+            businessOwners.value.forEach(businessOwner => {
+                if(businessOwner.role == 'admin' && authUser.value.role == 'admin'){
+                    adminCount++;
+                }
+            })
 
+            if(adminCount == 1){
+                fadeButton.value = true;
+            }
             loading.value = false;
         })
         .catch((error) => {
@@ -363,7 +381,6 @@ const getBusinessOwnerAcc = () => {
             user_data.value.business_owner_id = response.data.data.id;
             loading.value = false;
 
-
         })
         .catch((error) => {
             loading.value = false;
@@ -396,6 +413,8 @@ const assignRole = () => {
             console.log(response);
             businessOwners.value.push(response.data.data);
             loading.value = false;
+            clearName();
+            user_data.value = null;
         })
         .catch((error) => {
             loading.value = false;
@@ -450,9 +469,16 @@ const changeOwnership = (id, index) => {
         }
     })
         .then((response) => {
+
+            if (response.data.status == 405) {
+                toast.warning(response.data.message);
+                return;
+            }
+
             businessOwners.value.splice(index, 1);
             businessOwners.value.push(response.data.data);
             loading.value = false;
+
             toast.success('Role Changed Successfully');
         })
         .catch((error) => {
@@ -463,7 +489,6 @@ const changeOwnership = (id, index) => {
 
 
 const leaveBusiness = () => {
-
     let token = localStorage.getItem('token')
     if (!token) {
         router.get('/login');
@@ -471,22 +496,33 @@ const leaveBusiness = () => {
 
     loading.value = true;
     axios.delete(`${baseUrl}/shops/business_ownerships/leave`, {
-        data: { shop_id: props.shop_id },
+        params: { shop_id: props.shop_id },
         headers: {
             Authorization: `Bearer ${token}`
         }
     })
         .then((response) => {
             console.log(response);
+            if (response.data.status == 405) {
+                toast.warning(response.data.message);
+                return;
+            }
             router.replace('/dashboard')
             loading.value = false;
         })
         .catch((error) => {
             loading.value = false;
-            console.error(error);
+            console.log(error);
         })
 }
 
 </script>
 
-<style scoped></style>
+<style scoped>
+.fade-button {
+    background-color:blue;
+    opacity: 0.5;
+    transition: opacity 0.3s ease-in-out;
+}
+
+</style>

@@ -8,7 +8,7 @@
                     <v-col v-for="(feedback, index) in feedbacks" :key="feedback.id" class="" cols="6">
 
                         <!-- Feedback Information -->
-                        <div class="border p-3 rounded-md">
+                        <div class="flex border p-3 rounded-md">
                             <div class="flex">
                                 <div class="me-3">
                                     <img v-if="feedback.user.photo" :src="feedback.user.photo" alt="User Photo"
@@ -24,12 +24,15 @@
                                     <span style="opacity: 0.7;">{{ formatDate(feedback.created_at) }}</span>
                                 </div>
                             </div>
+                            <div>
+                                <DeleteButton />
+                            </div>
                         </div>
 
                         <!-- Toggle Replies Button -->
                         <div class="flex justify-end mt-2">
                             <button @click="toggleReplyBox(index)" class="btn">
-                                {{ replyBox[index] ? 'Hide Replies' : 'View Replies' }}
+                                {{ replyBox[index] ? 'Close' : 'Reply' }}
                             </button>
                         </div>
 
@@ -124,6 +127,7 @@
 import Layout from "../Layouts/Layout.vue";
 import Stars from "../Components/Stars.vue";
 import Button from "../Components/Button.vue";
+import DeleteButton from '../Components/DeleteButton.vue'
 import { ref, onMounted, inject } from "vue";
 import { useForm } from "@inertiajs/vue3";
 import { useRouter } from 'vue-router';

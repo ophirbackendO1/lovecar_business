@@ -45,7 +45,7 @@
                                                     togglePermission(
                                                         $event,
                                                         permission.shop_id,
-                                                        'update_item_price', 'update_daily_info'
+                                                        'update_item_price'
                                                     )
                                                     " />
                                             <span class="slider"></span>
@@ -145,10 +145,11 @@
 import Layout from "../Layouts/Layout.vue";
 import BackButton from "../Components/BackButton.vue";
 import { ref, onMounted, inject } from "vue";
+import { useToast } from "vue-toastification";
 const loading = ref(false);
 const baseUrl = inject("baseUrl");
 const permission = ref(null);
-
+const toast = useToast();
 
 const props = defineProps({
     shop_id: Number,
@@ -182,18 +183,22 @@ onMounted(() => {
         });
 });
 
-const togglePermission = (event, shopId, permissionKey, secondPermissionKey = null) => {
+const togglePermission = (event, shopId, permissionKey) => {
+    console.log(permissionKey);
+
     let token = localStorage.getItem("token");
-    console.log(event);
     const isChecked = event.target.checked;
+    console.log(isChecked);
+
+    const payload = {
+        shop_id: shopId,
+        [permissionKey]: isChecked,
+    };
+
+  
     axios
         .post(
-            `${baseUrl}/shops/business_ownerships/givePermission`,
-            {
-                shop_id: shopId,
-                [permissionKey]: isChecked,
-                [secondPermissionKey] : isChecked,
-            },
+            `${baseUrl}/shops/business_ownerships/givePermission`, payload,
             {
                 headers: {
                     Authorization: `Bearer ${token}`,
@@ -204,6 +209,7 @@ const togglePermission = (event, shopId, permissionKey, secondPermissionKey = nu
             permission.value = response.data.data;
             console.log("Permission updated:", response.data);
             toast.success('Permission changed successfully');
+
         })
 
         .catch((error) => {
