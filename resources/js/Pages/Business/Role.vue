@@ -1,6 +1,6 @@
 <template>
     <div>
-        <Layout>
+        <Layout @permission="showData">
             <div class="p-3">
                 <v-row class="flex justify-center">
                     <v-col cols="6" class="">
@@ -12,7 +12,7 @@
                         <v-row class="flex justify-end">
                             <v-col cols="3">
                                 <div class="flex">
-                                    {{ permission }}
+
                                     <button v-if="authUser.role == 'admin' || (authUser.role == 'co-admin' && permission?.assign_role)" type="button" data-bs-toggle="modal" data-bs-target="#addRoleModal"
                                         class="form-control"
                                         style="border:1px solid red;color:red;box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;">
@@ -96,7 +96,7 @@
                                 <div class="flex">
                                     <v-dialog max-width="500">
                                         <template v-slot:activator="{ props: activatorProps }">
-                                            <button @click="leaveBusiness"
+                                            <button
                                                  v-bind="fadeButton ? {} : activatorProps" type="button" class="form-control"  :class="{ 'fade-button': fadeButton }"
                                                 style="color:white;box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;" :style="fadeButton ? 'background-color: rgba(255,0,0,0.5);' : 'background-color: red;'">
                                                 <div class="flex justify-between">
@@ -294,16 +294,19 @@ const baseUrl = inject('baseUrl');
 const businessOwners = ref([]);
 const toast = useToast();
 const fadeButton = ref(false);
+const permission = ref();
 const props = defineProps({
     shop_id: Number
 })
 
 const authUser = ref(JSON.parse(localStorage.getItem('authUser')));
 const selectedRole = ref();
+const showData = (data) => {
+    permission.value = data;
+}
 
 onMounted(() => {
-    const permission = inject('permission');
-    console.log('Now', permission);
+
     let token = localStorage.getItem('token')
 
     if (!token) {
@@ -321,7 +324,7 @@ onMounted(() => {
             console.log(businessOwners.value);
             let adminCount = 0;
             businessOwners.value.forEach(businessOwner => {
-                if(businessOwner.role == 'admin' && authUser.value.role == 'admin'){
+                if(businessOwner.role == 'admin'){
                     adminCount++;
                 }
             })

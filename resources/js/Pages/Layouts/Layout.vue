@@ -4,7 +4,7 @@
         <div class="container">
             <slot/>
         </div>
-        <Navbar v-if="currentUrl != '/dashboard'"/>
+        <Navbar @permission="showData" v-if="currentUrl != '/dashboard'"/>
     </div>
 </template>
 
@@ -16,6 +16,11 @@ import { usePage } from '@inertiajs/vue3';
 const page = usePage();
 
 const currentUrl = ref(page.url);
+const emit = defineEmits(['permission']);
+
+const showData = (data) => {
+    emit('permission', data)
+}
 
 </script>
 

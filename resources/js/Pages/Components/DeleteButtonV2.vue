@@ -1,6 +1,6 @@
 <template>
     <div>
-        <button class="bin-button position-absolute right-1 top-1">
+        <button v-if="status" class="bin-button position-absolute right-1 top-1">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 39 7" class="bin-top">
                 <line stroke-width="4" stroke="white" y2="5" x2="39" y1="5"></line>
                 <line stroke-width="3" stroke="white" y2="1.5" x2="26.0357" y1="1.5" x1="12"></line>
@@ -21,12 +21,13 @@
                 </path>
             </svg>
         </button>
-
     </div>
 </template>
 
 <script setup>
-
+const props = defineProps({
+    status : Boolean
+})
 </script>
 
 <style scoped>

@@ -1,6 +1,6 @@
 <template>
     <div>
-        <Layout>
+        <Layout @permission="showData">
             <v-row class="flex justify-center mt-10">
                 <v-col cols="6">
                     <BackButton class="mt-3" />
@@ -23,7 +23,7 @@
                             <div v-for="(item, innerIndex) in service.items" :key="innerIndex"
                                 class="row flex justify-between p-2 rounded-lg border my-3" data-bs-toggle="modal"
                                 :data-bs-target="'#dailyUpdateModal' + index"
-                                style="background-color: pink; opacity: 0.9;"
+
                                 @click="setSelectedItem(item, innerIndex)">
                                 <div class="col-md-6 text-center">
                                     <h3 class="">{{ item.name }}</h3>
@@ -81,7 +81,7 @@
                                                 <div class="flex justify-between items-center">
                                                     <h3>Price</h3>
                                                     <div class="rounded-lg px-3 py-2">
-                                                        <input type="number" class="form-control"
+                                                        <input :disabled="!permission?.update_item_price" type="number" class="form-control"
                                                             v-model="tempForm.price" />
                                                     </div>
                                                 </div>
@@ -107,9 +107,9 @@
                         <h3 class="mb-5 mx-5">မှတ်ချက်ရေးရန်</h3>
 
                         <div v-for="(note, index) in form.notes" class="" :key="index">
-                            <div class="border p-3 rounded-lg my-3 flex justify-between">
+                            <div class="my-2 rounded-lg flex justify-between">
 
-                                <input type="text" class="form-control" v-model="note.text">
+                                <input type="text" class="form-control border-1 border-danger" v-model="note.text">
                                 <div>
                                     <button @click="removeNote(note.id, index)" class="btn">
                                         <svg viewBox="0 0 15 17.5" height="17.5" width="15"
@@ -171,7 +171,7 @@ import { Inertia } from '@inertiajs/inertia';
 const loading = ref(false);
 const dailyUpdate = ref(null);
 const baseUrl = inject("baseUrl");
-
+const permission = ref();
 const addNote = () => {
     form.notes.push({
         id: null,
@@ -193,6 +193,10 @@ const form = useForm({
 const tempForm = useForm({
     price: null,
 });
+
+const showData = (data) => {
+    permission.value = data;
+}
 
 onMounted(() => {
     let token = localStorage.getItem("token");

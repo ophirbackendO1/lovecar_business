@@ -1,14 +1,13 @@
 <template>
     <div>
-        <Layout>
+        <Layout @permission="showData">
             <div class="mt-15">
                 <h3 class="text-danger mb-5 mx-8">အကြံပြုစာများ</h3>
                 <v-row class="p-4">
 
                     <v-col v-for="(feedback, index) in feedbacks" :key="feedback.id" class="" cols="6">
-
                         <!-- Feedback Information -->
-                        <div class="flex border p-3 rounded-md">
+                        <div class="flex justify-between border p-3 rounded-md position-relative">
                             <div class="flex">
                                 <div class="me-3">
                                     <img v-if="feedback.user.photo" :src="feedback.user.photo" alt="User Photo"
@@ -24,9 +23,35 @@
                                     <span style="opacity: 0.7;">{{ formatDate(feedback.created_at) }}</span>
                                 </div>
                             </div>
-                            <div>
-                                <DeleteButton />
-                            </div>
+
+                            <v-dialog max-width="500">
+                                <template v-slot:activator="{ props: activatorProps }">
+                                    <DeleteButtonV2 v-bind="activatorProps"
+                                        :status="permission?.delete_reviews" />
+                                </template>
+
+
+                                <template v-slot:default="{ isActive }">
+                                    <v-card title="Delete this review?">
+                                        <v-card-text>
+                                            Are you sure you want to delete this review?
+                                        </v-card-text>
+
+                                        <v-card-actions>
+                                            <v-spacer></v-spacer>
+                                            <Button @click="isActive.value = false" :classes="'bg-black text-white'"
+                                                text="Cancel" :status="1" />
+
+                                            <Button @click="deleteReview(feedback.id)"
+                                                text="Confirm" :status="1" />
+
+                                        </v-card-actions>
+                                    </v-card>
+                                </template>
+                            </v-dialog>
+
+
+
                         </div>
 
                         <!-- Toggle Replies Button -->
@@ -37,10 +62,11 @@
                         </div>
 
                         <!-- Replies Section -->
-                        <div v-if="replyBox[index]" class="mt-4">
+                        <div v-if="replyBox[index] && permission?.reply_reviews" class="mt-4">
                             <!-- List of Replies -->
-                            <Reply @update="updateReply" @delete="deleteReply(feedback.id, reply.id, replyIndex)" :id="reply.id"
-                                v-for="reply in feedback.replies" :index="index" :text="reply.name" :key="reply.id" :shopName="shopName" :replyIndex="replyIndex" />
+                            <Reply @update="updateReply" @delete="deleteReply(feedback.id, reply.id, replyIndex)"
+                                :id="reply.id" v-for="reply in feedback.replies" :index="index" :text="reply.name"
+                                :key="reply.id" :shopName="shopName" :replyIndex="replyIndex" />
                             <div v-for="(reply, replyIndex) in feedback.replies" :key="reply.id"
                                 class="mx-20 mt-4 flex items-center border-2 border-danger p-4 rounded-lg shadow-lg bg-white space-x-4">
                                 <div class="flex-shrink-0">
@@ -127,7 +153,7 @@
 import Layout from "../Layouts/Layout.vue";
 import Stars from "../Components/Stars.vue";
 import Button from "../Components/Button.vue";
-import DeleteButton from '../Components/DeleteButton.vue'
+import DeleteButtonV2 from "../Components/DeleteButtonV2.vue";
 import { ref, onMounted, inject } from "vue";
 import { useForm } from "@inertiajs/vue3";
 import { useRouter } from 'vue-router';
@@ -144,11 +170,44 @@ const feedbacks = ref([])
 const toast = useToast();
 const replyBox = ref([])
 const editPage = ref({})
+const permission = ref();
 const form = useForm({
     text: []
 })
 
 const shopName = ref()
+
+const showData = (data) => {
+    permission.value = data;
+}
+
+const deleteReview = (rating_id) => {
+    let token = localStorage.getItem('token');
+    if (!token) {
+        router.push('/login');
+        return;
+    }
+
+    loading.value = true;
+
+    axios.delete(`${baseUrl}/shops/ratings`, {
+        params: { rating_id, rating_id },
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    })
+        .then((response) => {
+            console.log(response);
+            loading.value = false;
+        })
+        .catch((error) => {
+            console.log(error);
+            loading.value = false;
+        })
+        .finally(() => {
+            loading.value = false;
+        });
+}
 
 onMounted(() => {
     let token = localStorage.getItem('token');

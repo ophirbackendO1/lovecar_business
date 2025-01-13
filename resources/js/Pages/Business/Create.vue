@@ -264,7 +264,7 @@
                                             </select>
                                         </v-col>
                                         <div>
-                                            <DeleteButton @click="removeServiceItemBox(index)" />
+                                            <DeleteButtonV2 @click="removeServiceItemBox(index)" />
                                         </div>
                                     </v-row>
 
@@ -399,7 +399,7 @@ import Layout from '../Layouts/Layout.vue';
 import Carloader from '../Components/Carloader.vue'
 import CreateButton from '../Components/CreateButton.vue';
 import BackButton from '../Components/BackButton.vue';
-import DeleteButton from '../Components/DeleteButton.vue';
+import DeleteButtonV2 from '../Components/DeleteButtonV2.vue';
 import ErrorMessage from '../Components/ErrorMessage.vue';
 import { VTimePicker } from 'vuetify/labs/VTimePicker'
 import { router, useForm } from '@inertiajs/vue3';

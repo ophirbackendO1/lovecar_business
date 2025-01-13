@@ -14,7 +14,7 @@
 
         </Link>
 
-        <Link :href="route('business.dailyUpdate', { shop_id: shopId })"><button class="btn flex text-white hover:bg-indigo-500">
+        <Link v-if="permission?.update_daily_info " :href="route('business.dailyUpdate', { shop_id: shopId })"><button class="btn flex text-white hover:bg-indigo-500">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
                 <path d="M11.625 16.5a1.875 1.875 0 1 0 0-3.75 1.875 1.875 0 0 0 0 3.75Z" />
                 <path fill-rule="evenodd"
@@ -26,6 +26,7 @@
             <h3 class="ms-2">UpdateDailyInfo</h3>
         </button>
         </Link>
+
         <Link v-if="authUser.role == 'admin'" :href="route('business.permission', { shop_id: shopId })"><button class="btn flex text-white hover:bg-indigo-500">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
                 <path fill-rule="evenodd"
@@ -48,7 +49,9 @@
         </button>
         </Link>
 
-        <Link :href="route('business.edit', { shop_id: shopId })">
+
+
+        <Link v-if="permission?.edit_info" :href="route('business.edit', { shop_id: shopId })">
         <button class="btn flex text-white hover:bg-indigo-500">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
                 <path
@@ -62,7 +65,7 @@
         </button>
         </Link>
 
-        <v-dialog v-if="authUser.role == 'admin'" max-width="500">
+        <v-dialog v-if="authUser?.role == 'admin'" max-width="500">
             <template v-slot:activator="{ props: activatorProps }">
                 <button v-bind="activatorProps" class="btn flex text-white hover:bg-indigo-500">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
@@ -109,7 +112,8 @@ const baseUrl = inject('baseUrl')
 const loading = ref(false)
 const toast = useToast();
 const permission = ref()
-const authUser = localStorage.getItem('authUser');
+const authUser = ref(JSON.parse(localStorage.getItem('authUser')));
+const emit = defineEmits(['permission']);
 
 onMounted(() => {
     let token = localStorage.getItem("token");
@@ -129,9 +133,8 @@ onMounted(() => {
             }
         )
         .then((response) => {
-            console.log(response.data.data);
             permission.value = response.data.data;
-      
+            emit('permission', permission.value);
             loading.value = false;
         })
         .catch((error) => {
